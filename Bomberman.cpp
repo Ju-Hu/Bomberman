@@ -1,6 +1,7 @@
 // Game engine
 #include "Bomberman.h"
 
+//test
 //// init windowsize
 //int windowWidth = WINDOW_WIDTH;
 //int windowHeight = WINDOW_HEIGHT;
