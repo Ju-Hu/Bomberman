@@ -19,10 +19,10 @@ int main(int argc, char* argv[])
     Bomberman *game = new Bomberman();
     game ->setMinimumSize(1366, 768); // Steam Umfrage: >97% benutzen diese odr höhere Auflösung
    
-    QTimer::singleShot(8000, splash, SLOT(close()));
-    QTimer::singleShot(8000, game, SLOT(show()));
-    QTimer::singleShot(8000, game, SLOT(openMenu()));
-    QTimer::singleShot(8000, game, SLOT(showFullScreen())); //showFullScreen()
+    QTimer::singleShot(1000, splash, SLOT(close()));
+    QTimer::singleShot(1000, game, SLOT(show()));
+    QTimer::singleShot(1000, game, SLOT(openMenu()));
+    QTimer::singleShot(1000, game, SLOT(showFullScreen())); //showFullScreen()
 
     return a.exec();
 }

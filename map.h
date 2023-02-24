@@ -40,6 +40,9 @@ public:
     //void clearMap();
 
 	clBlock* field[COLUMN][ROW];
+	QGraphicsPixmapItem* player1;
+	QGraphicsPixmapItem* player2;
+
 
 private:
 

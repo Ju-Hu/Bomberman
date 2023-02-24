@@ -49,10 +49,17 @@ public:
     void keyPressEvent(QKeyEvent*);
     void keyReleaseEvent(QKeyEvent*);
 
-    bool leftKey = false;
-    bool rightKey = false;
-    bool upKey = false;
-    bool downKey = false;
+    bool leftKey1 = false;
+    bool rightKey1 = false;
+    bool upKey1 = false;
+    bool downKey1 = false;
+    bool leftKey2 = false;
+    bool rightKey2 = false;
+    bool upKey2 = false;
+    bool downKey2 = false;
+    int StatusPlayer1 = 0;
+    int StatusPlayer2 = 0;
+
     void openCredits();
 
 public slots:
@@ -93,6 +100,10 @@ private:
     Pause* pauseMenu;
 
     bool paused;
+
+    enum gameState { Paused, InMenu, InGame };
+
+    gameState Status;
 
     Sound* soundManager;
 
