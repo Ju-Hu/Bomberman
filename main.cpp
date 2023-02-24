@@ -18,12 +18,13 @@ int main(int argc, char* argv[])
 
     Bomberman *game = new Bomberman();
     game ->setMinimumSize(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
-   
+
     QTimer::singleShot(4000, splash, SLOT(close())); //8000
     QTimer::singleShot(4000, intro, SLOT(stop()));
     QTimer::singleShot(4000, game, SLOT(show()));
     QTimer::singleShot(4000, game, SLOT(openMenu()));
     QTimer::singleShot(4000, game, SLOT(showFullScreen())); //showFullScreen()
+
 
     return a.exec();
 }

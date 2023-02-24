@@ -86,6 +86,21 @@ void Map::generateMap1()
     //player = new Player();
     //player->setPos(200, 400);
 
+    //Player erzeugen
+    player1 = new QGraphicsPixmapItem;
+    player1->setPos(COLUMN*BLOCK_SIZE-BLOCK_SIZE, ROW * BLOCK_SIZE - BLOCK_SIZE);
+    QPixmap playerImg1 = QPixmap("images/block1.png");
+    playerImg1 = playerImg1.scaled(BLOCK_SIZE, BLOCK_SIZE);
+    player1->setPixmap(playerImg1);
+    player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+    
+    player2 = new QGraphicsPixmapItem;
+    player2->setPos(BLOCK_SIZE, BLOCK_SIZE);
+    QPixmap playerImg2 = QPixmap("images/block1.png");
+    playerImg2 = playerImg2.scaled(BLOCK_SIZE, BLOCK_SIZE);
+    player2->setPixmap(playerImg2);
+    player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+
     mapName = "Map 1";
 }
 
@@ -195,4 +210,3 @@ void Map::generateMap3()
 //    //elementList->clear();
 //
 // 
-//}

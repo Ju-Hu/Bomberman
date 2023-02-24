@@ -43,19 +43,21 @@
 #define PLAYER_WIDTH 39
 #define PLAYER_HEIGHT 60
 
-#define MAP_HEIGHT 975
-#define MAP_WIDTH 1275
-
 #define COLUMN 17			//Spalte
 #define ROW 13				//Reihe
 
+#define BLOCK_SIZE 75
+
+#define MAP_HEIGHT ROW*BLOCK_SIZE        //975
+#define MAP_WIDTH COLUMN*BLOCK_SIZE      //1275
+
 #define PLAYER_SIZE 75
-#define PLAYER_SPEED 1
+#define PLAYER_SPEED 5
 
 #define BOMB_SIZE 20
 #define BOMB_TIMER 5
 
-#define BLOCK_SIZE 75
+
 
 #define BTN_GAP 50
 
