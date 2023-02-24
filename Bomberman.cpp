@@ -398,15 +398,15 @@ void Bomberman::refresh()
         static bool dCorPlayer1;
         static bool lCorPlayer1;
         static bool rCorPlayer1;
-        static bool uCorPlayer2 ;
-        static bool dCorPlayer2 ;
-        static bool lCorPlayer2 ;
-        static bool rCorPlayer2 ;
+        static bool uCorPlayer2;
+        static bool dCorPlayer2;
+        static bool lCorPlayer2;
+        static bool rCorPlayer2;
 
         //Autocorrection Player 1
-        if (!(lCorPlayer1 || rCorPlayer1) && ((yPlayer1 % BLOCK_SIZE) <= deadspot && (yPlayer1 % BLOCK_SIZE) > 0) && (leftKey1 || rightKey1)) { uCorPlayer1 = true;}
+        if (!(lCorPlayer1 || rCorPlayer1) && ((yPlayer1 % BLOCK_SIZE) <= deadspot && (yPlayer1 % BLOCK_SIZE) > 0) && (leftKey1 || rightKey1)) { uCorPlayer1 = true; }
         else { uCorPlayer1 = false; }
-        if (!(lCorPlayer1 || rCorPlayer1) && ((yPlayer1 % BLOCK_SIZE) < BLOCK_SIZE && (yPlayer1 % BLOCK_SIZE) >= BLOCK_SIZE - deadspot) && (leftKey1 || rightKey1)) { dCorPlayer1 = true;}
+        if (!(lCorPlayer1 || rCorPlayer1) && ((yPlayer1 % BLOCK_SIZE) < BLOCK_SIZE && (yPlayer1 % BLOCK_SIZE) >= BLOCK_SIZE - deadspot) && (leftKey1 || rightKey1)) { dCorPlayer1 = true; }
         else { dCorPlayer1 = false; }
         if (!(uCorPlayer1 || dCorPlayer1) && ((xPlayer1 % BLOCK_SIZE) <= deadspot && (xPlayer1 % BLOCK_SIZE) > 0) && (upKey1 || downKey1)) { lCorPlayer1 = true; }
         else { lCorPlayer1 = false; }
@@ -424,19 +424,19 @@ void Bomberman::refresh()
         else { rCorPlayer2 = false; }
 
         //Movement Player 1
-        if (((upKey1 == true && (xPlayer1 % BLOCK_SIZE) == 0) || uCorPlayer1) && map->player1->y() >= 0)  {
+        if (((upKey1 == true && (xPlayer1 % BLOCK_SIZE) == 0) || uCorPlayer1) && map->player1->y() >= 0) {
             map->player1->moveBy(0, -PLAYER_SPEED);
             StatusPlayer1 = 1;
         }
-        if ((downKey1 == true && (xPlayer1 % BLOCK_SIZE == 0) || dCorPlayer1) && (map->player1->y() <= MAP_HEIGHT - BLOCK_SIZE) ) {
+        if ((downKey1 == true && (xPlayer1 % BLOCK_SIZE == 0) || dCorPlayer1) && (map->player1->y() <= MAP_HEIGHT - BLOCK_SIZE)) {
             map->player1->moveBy(0, PLAYER_SPEED);
             StatusPlayer1 = 3;
         }
-        if ((leftKey1 == true  && (yPlayer1 % BLOCK_SIZE) == 0 || lCorPlayer1) && map->player1->x() >= 0 ) {
+        if ((leftKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || lCorPlayer1) && map->player1->x() >= 0) {
             map->player1->moveBy(-PLAYER_SPEED, 0);
             StatusPlayer1 = 4;
         }
-        if ((rightKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0  || rCorPlayer1) && (map->player1->x() <= MAP_WIDTH - BLOCK_SIZE)) {
+        if ((rightKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || rCorPlayer1) && (map->player1->x() <= MAP_WIDTH - BLOCK_SIZE)) {
             map->player1->moveBy(PLAYER_SPEED, 0);
             StatusPlayer1 = 2;
         }
@@ -461,28 +461,28 @@ void Bomberman::refresh()
         }
         if (!upKey2 && !downKey2 && !rightKey2 && !leftKey2) { StatusPlayer2 = 0; }
 
-      
+
         QList<QGraphicsItem*> colliding_items = levelScene->collidingItems(map->player1);
         for (int i = 0, n = colliding_items.size(); i < n; ++i) {
             if (typeid(*(colliding_items[i])) == typeid(clBlock)) {
-                if (!colliding_items.isEmpty()) qDebug() << colliding_items; 
-            } 
+                if (!colliding_items.isEmpty()) qDebug() << colliding_items;
+            }
             if (typeid(*(colliding_items[i])) == typeid(QGraphicsPixmapItem)) {
                 if (!colliding_items.isEmpty()) qDebug() << colliding_items;
             }
         }
 
+     }
+
        
-
- //refresh Volume
-    if (scene() == menuScene) 
-    {
+    //refresh Volume
+     if (scene() == menuScene)
+      {
         soundManager->setVolume(menuScene->getVolume());
-    }
+      }
 
-
-    }
-
+    
+}
 
 
    
