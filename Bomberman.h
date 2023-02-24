@@ -49,6 +49,8 @@ public:
     void keyPressEvent(QKeyEvent*);
     void keyReleaseEvent(QKeyEvent*);
 
+    void resizeEvent(QResizeEvent* event);
+
     bool leftKey = false;
     bool rightKey = false;
     bool upKey = false;
@@ -64,6 +66,8 @@ public slots:
 
     void quitApp();
 
+    //void setVolume();
+
     void clicked1();
 
     void clicked2();
@@ -76,15 +80,11 @@ public slots:
 
 signals:
     void playSound(QString);
-
+    //void setVolume(int);
 
 private:
-    
+
     QGraphicsScene* levelScene;
-
-    int windowWidth;
-
-    int windowHeight;
 
     Credits* creditsMenu;
 

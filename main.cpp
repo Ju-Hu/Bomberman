@@ -13,16 +13,17 @@ int main(int argc, char* argv[])
     //Sound
     QMediaPlayer *intro = new QMediaPlayer;
     intro->setMedia(QUrl::fromLocalFile("sounds/Intro.mp3"));
-    intro->setVolume(30);
+    intro->setVolume(10);
     intro->play();
 
     Bomberman *game = new Bomberman();
-    game ->setMinimumSize(1366, 768); // Steam Umfrage: >97% benutzen diese odr höhere Auflösung
+    game ->setMinimumSize(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
    
-    QTimer::singleShot(8000, splash, SLOT(close()));
-    QTimer::singleShot(8000, game, SLOT(show()));
-    QTimer::singleShot(8000, game, SLOT(openMenu()));
-    QTimer::singleShot(8000, game, SLOT(showFullScreen())); //showFullScreen()
+    QTimer::singleShot(4000, splash, SLOT(close())); //8000
+    QTimer::singleShot(4000, intro, SLOT(stop()));
+    QTimer::singleShot(4000, game, SLOT(show()));
+    QTimer::singleShot(4000, game, SLOT(openMenu()));
+    QTimer::singleShot(4000, game, SLOT(showFullScreen())); //showFullScreen()
 
     return a.exec();
 }
