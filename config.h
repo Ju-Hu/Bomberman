@@ -21,6 +21,14 @@
 #include <string>
 #include <regex>
 #include <iostream>
+#include <QSlider>
+//#include <QScreen>
+#include <QDebug>
+
+#include <QDialog>
+
+#include <QMediaContent>
+#include <QMediaResource>
 
 
 #include <QMediaPlayer>         //Musik
@@ -55,6 +63,9 @@
 
 #define FPS 60
 
-#define TITLE "Bomberman V1"
+#define TITLE "Bomberman"
+
+#define MUSIC_VOLUME 2
+#define EFFECT_VOLUME 2
 
 #endif

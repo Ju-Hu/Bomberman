@@ -27,7 +27,13 @@ public:
 
     void setMenuSprite(QString menuImage);
 
+public slots:
+    int getVolume();
+
+
 private:
+
+    QSlider* volumeSlider;
 
     MenuButton* Lvl1Btn;
 

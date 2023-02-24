@@ -1,13 +1,12 @@
 #include "sound.h"
-#include <QDebug>
-#include <QTimer>
+
 Sound::Sound(QWidget* parent) : QDialog(parent){
 
     this->click = new QMediaPlayer;
     click->setMedia(QUrl("sounds/click.wav"));
-    click->setVolume(75);
+    click->setVolume(40);
 
-    this->run = new QSoundEffect;
+    /*this->run = new QSoundEffect;
     run->setSource(QUrl("sounds/click.wav"));
     run->setLoopCount(0);
     run->setVolume(.25f);
@@ -35,26 +34,37 @@ Sound::Sound(QWidget* parent) : QDialog(parent){
     this->win = new QSoundEffect;
     win->setSource(QUrl("sounds/click.wav"));
     win->setLoopCount(0);
-    win->setVolume(.25f);
+    win->setVolume(.25f);*/
 
     this->menu = new QMediaPlayer;
     menu->setMedia(QUrl("sounds/menu.mp3"));
-    menu->setVolume(30);
+    menu->setVolume(20);
 
     this->map1 = new QMediaPlayer;
     map1->setMedia(QUrl("sounds/map1.mp3"));
-    map1->setVolume(30);
+    map1->setVolume(20);
 
     this->map2 = new QMediaPlayer;
     map2->setMedia(QUrl("sounds/map2.mp3"));
-    map2->setVolume(30);
+    map2->setVolume(20);
 
     this->map3 = new QMediaPlayer;
     map3->setMedia(QUrl("sounds/map3.mp3"));
-    map3->setVolume(30);
+    map3->setVolume(20);
 }
 
 Sound::~Sound() {
+}
+
+void Sound::setVolume(int volume)
+{
+    //qDebug() << "setVolume " << volume;
+    menu->setVolume(MUSIC_VOLUME * volume);
+    map1->setVolume(MUSIC_VOLUME * volume);
+    map2->setVolume(MUSIC_VOLUME * volume);
+    map3->setVolume(MUSIC_VOLUME * volume);
+    click->setVolume(EFFECT_VOLUME * volume);
+    newVolume = MUSIC_VOLUME * volume;
 }
 
 void Sound::playSound(QString which) {
@@ -114,17 +124,17 @@ void Sound::playSound(QString which) {
     }
     else if (which == "startPauseMusic") {
         
-        menu->setVolume(10);
-        map1->setVolume(10);
-        map2->setVolume(10);
-        map3->setVolume(10);
+        menu->setVolume(newVolume/4);
+        map1->setVolume(newVolume/4);
+        map2->setVolume(newVolume/4);
+        map3->setVolume(newVolume/4);
     }
     else if (which == "stopPauseMusic") {
         
-        menu->setVolume(50);
-        map1->setVolume(50);
-        map2->setVolume(50);
-        map3->setVolume(50);
+        menu->setVolume(newVolume);
+        map1->setVolume(newVolume);
+        map2->setVolume(newVolume);
+        map3->setVolume(newVolume);
     }
 
     else {
