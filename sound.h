@@ -1,12 +1,7 @@
 #ifndef SOUND_H
 #define SOUND_H
 
-
-#include <QDialog>
-#include <QMediaPlayer>
-#include <QMediaContent>
-#include <QMediaResource>
-#include <QSoundEffect>
+#include "config.h"
 
 class Sound : public QDialog
 {
@@ -22,8 +17,11 @@ private:
 
     QMediaPlayer* click, * menu, * map1, * map2, * map3;
 
+    int newVolume;
+
 public slots:
     void playSound(QString);
+    void setVolume(int);
 
 };
 

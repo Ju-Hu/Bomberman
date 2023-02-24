@@ -8,14 +8,13 @@
 
 Bomberman::Bomberman()
 {
-    windowWidth = WINDOW_WIDTH;
-    windowHeight = WINDOW_HEIGHT;
-
     setWindowTitle(TITLE);
 
     // init szene
     levelScene = new QGraphicsScene();
-
+    QImage backgroundMap = QImage("images/backgrounds/background_map.png");
+    //background = background.scaled(WINDOW_HEIGHT, WINDOW_WIDTH);
+    levelScene->setBackgroundBrush(backgroundMap);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -23,12 +22,12 @@ Bomberman::Bomberman()
     // init Sound
     soundManager = new Sound();
     connect(this, &Bomberman::playSound, soundManager, &Sound::playSound);
-
+    
     // init Timer
 
-    //refreshTimer = new QTimer(this);
-    //connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
-    //refreshTimer->start(1000 / FPS);
+    refreshTimer = new QTimer(this);
+    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
+    refreshTimer->start(1000 / FPS);
     animationTimer = new QTimer(this);
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(animate()));
     animationTimer->start(500);
@@ -39,9 +38,12 @@ Bomberman::Bomberman()
     // init main menu
     menuScene = new Menu();
 
+    //connect(menuScene, &Menu::getVolume, soundManager, &Sound::setVolume);
+
     connect(menuScene->getLvl1Btn(), SIGNAL(clicked()), this, SLOT(clicked1()));
     connect(menuScene->getLvl2Btn(), SIGNAL(clicked()), this, SLOT(clicked2()));
     connect(menuScene->getLvl3Btn(), SIGNAL(clicked()), this, SLOT(clicked3()));
+    //connect(menuScene->volumeSlider, SIGNAL(valueChanged()), soundManager, SLOT(setVolume())); //getVolume() //valueChanged()
 
     //connect(buttonMenuMapper, SIGNAL(mapped(QString)), this, SLOT(loadMap(QString)));
     // link quit button in menu
@@ -131,6 +133,16 @@ void Bomberman::keyReleaseEvent(QKeyEvent* event)
     }
 }
 
+void Bomberman::resizeEvent(QResizeEvent* event)
+{
+    qDebug() << "resize";
+    /*if (levelScene)
+        levelScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);*/
+    // Scale the view to the new size
+    QRect rect = QRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    fitInView(rect);
+}
+
 void Bomberman::openMenu()
 {
     if (paused == true)
@@ -157,6 +169,7 @@ void Bomberman::clicked1()
     emit playSound("click");
     emit playSound("stopMusic");
     emit playSound("map1");
+    levelScene->clear();
     map->generateMap1();
     for (int c = 0; c < COLUMN; c++) {
         for (int r = 0; r < ROW; r++) {
@@ -171,6 +184,14 @@ void Bomberman::clicked2()
     emit playSound("click");
     emit playSound("stopMusic");
     emit playSound("map2");
+    levelScene->clear();
+    map->generateMap2();
+    for (int c = 0; c < COLUMN; c++) {
+        for (int r = 0; r < ROW; r++) {
+            levelScene->addItem(map->field[c][r]);
+        }
+    }
+    openGame();
 }
 
 void Bomberman::clicked3()
@@ -280,6 +301,9 @@ void Bomberman::animate()
 
 void Bomberman::refresh()
 {
-
-
+    //refresh Volume
+    if (scene() == menuScene) 
+    {
+        soundManager->setVolume(menuScene->getVolume());
+    }
 }
