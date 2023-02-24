@@ -426,38 +426,38 @@ void Bomberman::refresh()
         else { rCorPlayer2 = false; }
 
         //Movement Player 1
-        if (((upKey1 == true && (xPlayer1 % BLOCK_SIZE) == 0) || uCorPlayer1) && map->player1->y() >= 0) {
+        if (((upKey1 == true && (xPlayer1 % BLOCK_SIZE) == 0) || uCorPlayer1) && map->player1->y() >= PLAYER_SPEED) {
             map->player1->moveBy(0, -PLAYER_SPEED);
             StatusPlayer1 = 1;
         }
-        if ((downKey1 == true && (xPlayer1 % BLOCK_SIZE == 0) || dCorPlayer1) && (map->player1->y() <= MAP_HEIGHT - BLOCK_SIZE)) {
+        if ((downKey1 == true && (xPlayer1 % BLOCK_SIZE == 0) || dCorPlayer1) && (map->player1->y() <= MAP_HEIGHT - BLOCK_SIZE- PLAYER_SPEED)) {
             map->player1->moveBy(0, PLAYER_SPEED);
             StatusPlayer1 = 3;
         }
-        if ((leftKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || lCorPlayer1) && map->player1->x() >= 0) {
+        if ((leftKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || lCorPlayer1) && map->player1->x() >= PLAYER_SPEED) {
             map->player1->moveBy(-PLAYER_SPEED, 0);
             StatusPlayer1 = 4;
         }
-        if ((rightKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || rCorPlayer1) && (map->player1->x() <= MAP_WIDTH - BLOCK_SIZE)) {
+        if ((rightKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || rCorPlayer1) && (map->player1->x() <= MAP_WIDTH - BLOCK_SIZE- PLAYER_SPEED)) {
             map->player1->moveBy(PLAYER_SPEED, 0);
             StatusPlayer1 = 2;
         }
         if (!upKey1 && !downKey1 && !rightKey1 && !leftKey1) { StatusPlayer1 = 0; }
 
         //Movement Player 2
-        if (((upKey2 == true && (xPlayer2 % BLOCK_SIZE) == 0) || uCorPlayer2) && map->player2->y() >= 0) {
+        if (((upKey2 == true && (xPlayer2 % BLOCK_SIZE) == 0) || uCorPlayer2) && map->player2->y() >= PLAYER_SPEED) {
             map->player2->moveBy(0, -PLAYER_SPEED);
             StatusPlayer2 = 1;
         }
-        if ((downKey2 == true && (xPlayer2 % BLOCK_SIZE == 0) || dCorPlayer2) && (map->player2->y() <= MAP_HEIGHT - BLOCK_SIZE)) {
+        if ((downKey2 == true && (xPlayer2 % BLOCK_SIZE == 0) || dCorPlayer2) && (map->player2->y() <= MAP_HEIGHT - BLOCK_SIZE- PLAYER_SPEED)) {
             map->player2->moveBy(0, PLAYER_SPEED);
             StatusPlayer2 = 3;
         }
-        if ((leftKey2 == true && (yPlayer2 % BLOCK_SIZE) == 0 || lCorPlayer2) && map->player2->x() >= 0) {
+        if ((leftKey2 == true && (yPlayer2 % BLOCK_SIZE) == 0 || lCorPlayer2) && map->player2->x() >= PLAYER_SPEED) {
             map->player2->moveBy(-PLAYER_SPEED, 0);
             StatusPlayer2 = 4;
         }
-        if ((rightKey2 == true && (yPlayer2 % BLOCK_SIZE) == 0 || rCorPlayer2) && (map->player2->x() <= MAP_WIDTH - BLOCK_SIZE)) {
+        if ((rightKey2 == true && (yPlayer2 % BLOCK_SIZE) == 0 || rCorPlayer2) && (map->player2->x() <= MAP_WIDTH - BLOCK_SIZE- PLAYER_SPEED)) {
             map->player2->moveBy(PLAYER_SPEED, 0);
             StatusPlayer2 = 2;
         }
