@@ -231,6 +231,8 @@ void Bomberman::clicked2()
             levelScene->addItem(map->field[c][r]);
         }
     }
+    levelScene->addItem(map->player1);
+    levelScene->addItem(map->player2);
     openGame();
 }
 

@@ -2,6 +2,7 @@
 
 int main(int argc, char* argv[])
 {
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon("images/icon.png"));
 
@@ -23,7 +24,7 @@ int main(int argc, char* argv[])
     QTimer::singleShot(4000, intro, SLOT(stop()));
     QTimer::singleShot(4000, game, SLOT(show()));
     QTimer::singleShot(4000, game, SLOT(openMenu()));
-    QTimer::singleShot(4000, game, SLOT(showFullScreen())); //showFullScreen()
+   // QTimer::singleShot(4000, game, SLOT(showFullScreen())); //showFullScreen()
 
 
     return a.exec();
