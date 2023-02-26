@@ -58,8 +58,9 @@ public:
     bool rightKey2 = false;
     bool upKey2 = false;
     bool downKey2 = false;
-    int StatusPlayer1 = 0;
+    int StatusPlayer1 =0;
     int StatusPlayer2 = 0;
+
 
 
     void resizeEvent(QResizeEvent* event);
@@ -112,6 +113,8 @@ private:
     QTimer* refreshTimer;
 
     QTimer* animationTimer;
+
+
 
     int anim = 0;
 
