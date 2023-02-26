@@ -22,6 +22,7 @@
 #include <regex>
 #include <iostream>
 #include <QSlider>
+#include <QPushButton>
 //#include <QScreen>
 #include <QDebug>
 
