@@ -4,7 +4,7 @@
 Menu::Menu() : QGraphicsScene()
 {
     int xButton = 200;
-    int yStartButton = 300;
+    int yStartButton = 200;
     // Create window scene with background
     //this->setSceneRect(0, 0, MAP_WIDTH, MAP_HEIGHT);
     QImage background = QImage("images/backgrounds/background_menu.png");
@@ -58,6 +58,12 @@ Menu::Menu() : QGraphicsScene()
     this->addWidget(Lvl3Btn);
     index++;
 
+    // Editor Btn
+    EditBtn = new MenuButton("Editor");
+    EditBtn->move(xButton, yStartButton + index * (EditBtn->height() + BTN_GAP));
+    this->addWidget(EditBtn);
+    index++;
+
     // display quitBtn
     QuitBtn = new MenuButton("Quit");
     QuitBtn->move(xButton, yStartButton + index * (QuitBtn->height() + BTN_GAP));
@@ -77,6 +83,15 @@ Menu::Menu() : QGraphicsScene()
     title->setFont(font);
     title->setPos(900, 200);
     this->addItem(title);
+
+    // Fullscreen Text
+    QGraphicsTextItem* f11 = new QGraphicsTextItem();
+    f11->setPlainText("F11 = Fullscreen\nESC = Credits");
+    QFont font2 = QFont("Agency FB", 20);
+    font2.setBold(true);
+    f11->setFont(font2);
+    f11->setPos(0, 0);
+    this->addItem(f11);
 }
 
 Menu::~Menu()
@@ -85,6 +100,7 @@ Menu::~Menu()
     delete Lvl1Btn;
     delete Lvl2Btn;
     delete Lvl3Btn;
+    delete EditBtn;
     delete QuitBtn;
 }
 
@@ -115,7 +131,10 @@ MenuButton* Menu::getLvl3Btn() const
 {
     return Lvl3Btn;
 }
-
+MenuButton* Menu::getEditBtn() const
+{
+    return EditBtn;
+}
 MenuButton* Menu::getQuitBtn() const
 {
     return QuitBtn;

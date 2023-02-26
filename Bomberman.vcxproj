@@ -84,11 +84,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="credits.cpp" />
+    <ClCompile Include="editor.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="menubutton.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="sound.cpp" />
+    <ClCompile Include="victory.cpp" />
     <QtRcc Include="Bomberman.qrc" />
     <QtUic Include="Bomberman.ui" />
     <QtMoc Include="Bomberman.h" />
@@ -98,10 +100,12 @@
   <ItemGroup>
     <ClInclude Include="config.h" />
     <ClInclude Include="credits.h" />
+    <ClInclude Include="editor.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="menubutton.h" />
     <ClInclude Include="pause.h" />
+    <ClInclude Include="victory.h" />
     <QtMoc Include="sound.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

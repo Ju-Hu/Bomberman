@@ -33,6 +33,9 @@
 #include "sound.h"
 #include "map.h"
 #include "credits.h"
+#include "victory.h"
+#include "editor.h"
+
 
 class Bomberman : public QGraphicsView
 {
@@ -61,19 +64,22 @@ public:
     int StatusPlayer1 =0;
     int StatusPlayer2 = 0;
 
-
+    int editStatus = 0;
 
     void resizeEvent(QResizeEvent* event);
 
     void openCredits();
 
+    void openVictory();
+
 public slots:
 
     void closeCredits();
     void closePause();
+    void closeVictory();
 
     void openMenu();
-
+    void openEditor();
     void quitApp();
 
     //void setVolume();
@@ -88,6 +94,17 @@ public slots:
 
     void refresh();
 
+    void clickedEdit(int btnIndex);
+
+    void loadEdit1();
+    void loadEdit2();
+    void loadEdit3();
+    void loadEdit4();
+
+    void saveEdit1();
+    void saveEdit2();
+    void saveEdit3();
+
 signals:
     void playSound(QString);
     //void setVolume(int);
@@ -100,7 +117,11 @@ private:
 
     Menu* menuScene;
 
+    Editor* editorScene;
+
     Pause* pauseMenu;
+
+    Victory* victoryMenu;
 
     bool paused;
 
@@ -114,7 +135,7 @@ private:
 
     QTimer* animationTimer;
 
-
+    QSignalMapper* buttonEditorMapper;
 
     int anim = 0;
 

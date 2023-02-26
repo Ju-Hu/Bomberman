@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 
     //Splash Screen
     QSplashScreen *splash = new QSplashScreen;
-    splash->setPixmap(QPixmap("images/splash.png"));
+    splash->setPixmap(QPixmap("images/splash.png").scaled(600, 200));
     splash->show();
 
     //Sound
