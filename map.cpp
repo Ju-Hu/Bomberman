@@ -1,9 +1,62 @@
 #include "map.h"
+
 using namespace std;
 
 Map::Map()
 {
     mapName = "noNamedlevel";
+
+
+    Scale(&Player1Pix1st1);
+    Scale(&Player1Pix1st2);
+    Scale(&Player1Pix1up1);
+    Scale(&Player1Pix1up2);
+    Scale(&Player1Pix1dw1);
+    Scale(&Player1Pix1dw2);
+    Scale(&Player1Pix1lf1);
+    Scale(&Player1Pix1lf2);
+    Scale(&Player1Pix1ri1);
+    Scale(&Player1Pix1ri2);
+    Scale(&Player2Pix1st1);
+    Scale(&Player2Pix1st2);
+    Scale(&Player2Pix1up1);
+    Scale(&Player2Pix1up2);
+    Scale(&Player2Pix1dw1);
+    Scale(&Player2Pix1dw2);
+    Scale(&Player2Pix1lf1);
+    Scale(&Player2Pix1lf2);
+    Scale(&Player2Pix1ri1);
+    Scale(&Player2Pix1ri2);
+
+    Scale(&StonePix1);
+    Scale(&BoxPix1);
+    Scale(&BombPix1);
+    Scale(&FlamePix1);
+    Scale(&Item1Pix1);
+    Scale(&Item2Pix1);
+    Scale(&Item3Pix1);
+
+    Scale(&StonePix2);
+    Scale(&BoxPix2);
+    Scale(&BombPix2);
+    Scale(&FlamePix2);
+    Scale(&Item1Pix2);
+    Scale(&Item2Pix2);
+    Scale(&Item3Pix2);
+    Scale(&Player1Pix2);
+    Scale(&Player2Pix2);
+
+    Scale(&StonePix3);
+    Scale(&BoxPix3);
+    Scale(&BombPix3);
+    Scale(&FlamePix3);
+    Scale(&Item1Pix3);
+    Scale(&Item2Pix3);
+    Scale(&Item3Pix3);
+    Scale(&Player1Pix3);
+    Scale(&Player2Pix3);
+
+
 }
 
 Map::~Map()
@@ -11,8 +64,15 @@ Map::~Map()
     //clearMap();
 }
 
+
+void Scale(QPixmap* Pix) {
+    *Pix= Pix->scaled(BLOCK_SIZE, BLOCK_SIZE);
+}
+
 void Map::generateMap1()
 {
+
+    /*------------------Reading Map from TXT-------------------------*/
     ifstream source("maps/map1.txt"); //"map1.txt"
     string input;
     string modified_input;
@@ -30,82 +90,72 @@ void Map::generateMap1()
             modified_input = "00000000000000000";
         }
 
+    /*--------------------Creating Map-------------------------------*/
         for (int c = 0; c < COLUMN; c++) {
             if (modified_input[c] != '\0') {
-                field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0');
-                field[c][r]->setPos(field[c][r]->x, field[c][r]->y);
-                if (field[c][r]->st == 1) {
-                    QPixmap blockimg1 = QPixmap("images/block1.png");
-                    blockimg1 = blockimg1.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg1);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0');
+                Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
+                
+                //Create Stone
+                if (Field[c][r]->st == 1) {
+                    Field[c][r]->setPixmap(StonePix1);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 2) {
-                    QPixmap blockimg2 = QPixmap("images/block2.png");
-                    blockimg2 = blockimg2.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg2);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Box
+                if (Field[c][r]->st == 2) {
+                    Field[c][r]->setPixmap(BoxPix1);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 3) {
-                    QPixmap blockimg3 = QPixmap("images/bomb.png");
-                    blockimg3 = blockimg3.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg3);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Item1
+                if (Field[c][r]->st == 3) {
+                    Field[c][r]->setPixmap(Item1Pix1);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 4) {
-                    QPixmap blockimg4 = QPixmap("images/flame1.png");
-                    blockimg4 = blockimg4.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg4);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Item2
+                if (Field[c][r]->st == 4) {
+                    Field[c][r]->setPixmap(Item2Pix1);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 5) {
-                    QPixmap blockimg5 = QPixmap("images/powerup1.png");
-                    blockimg5 = blockimg5.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg5);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Item3
+                if (Field[c][r]->st == 5) {
+                    Field[c][r]->setPixmap(Item3Pix1);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 6) {
-                    QPixmap blockimg6 = QPixmap("images/powerup2.png");
-                    blockimg6 = blockimg6.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg6);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Player1
+                if (Field[c][r]->st == 6) {
+                    player1 = new QGraphicsPixmapItem;
+                    player1->setPos(Field[c][r]->x, Field[c][r]->y);
+                    player1->setPixmap(Player1Pix1st1);
+                    player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 7) {
-                    QPixmap blockimg7 = QPixmap("images/powerup3.png");
-                    blockimg7 = blockimg7.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg7);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Player2
+                if (Field[c][r]->st == 7) {
+                    player2 = new QGraphicsPixmapItem;
+                    player2->setPos(Field[c][r]->x, Field[c][r]->y);
+                    player2->setPixmap(Player2Pix1st1);
+                    player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
+                //Create Bomb
+                //if (Field[c][r]->st == 8) {
+                //    Field[c][r]->setPixmap(BombPix1);
+                //    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //}
+                //Create Flame
+                //if (Field[c][r]->st == 9) {
+                //    Field[c][r]->setPixmap(FlamePix1);
+                //    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //}
             }
         }
         r++;
     }
-
-
-    //// create the player
-    //player = new Player();
-    //player->setPos(200, 400);
-
-    //Player erzeugen
-    player1 = new QGraphicsPixmapItem;
-    player1->setPos(COLUMN*BLOCK_SIZE-BLOCK_SIZE, ROW * BLOCK_SIZE - BLOCK_SIZE);
-    QPixmap playerImg1 = QPixmap("images/block1.png");
-    playerImg1 = playerImg1.scaled(BLOCK_SIZE, BLOCK_SIZE);
-    player1->setPixmap(playerImg1);
-    player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
-    
-    player2 = new QGraphicsPixmapItem;
-    player2->setPos(BLOCK_SIZE, BLOCK_SIZE);
-    QPixmap playerImg2 = QPixmap("images/block1.png");
-    playerImg2 = playerImg2.scaled(BLOCK_SIZE, BLOCK_SIZE);
-    player2->setPixmap(playerImg2);
-    player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
 
     mapName = "Map 1";
 }
 
 void Map::generateMap2()
 {
+    /*------------------Reading Map from TXT-------------------------*/
     ifstream source("maps/map2.txt"); //"map1.txt"
     string input;
     string modified_input;
@@ -123,52 +173,61 @@ void Map::generateMap2()
             modified_input = "00000000000000000";
         }
 
+        /*--------------------Creating Map-------------------------------*/
         for (int c = 0; c < COLUMN; c++) {
             if (modified_input[c] != '\0') {
-                field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0');
-                field[c][r]->setPos(field[c][r]->x, field[c][r]->y);
-                if (field[c][r]->st == 1) {
-                    QPixmap blockimg1 = QPixmap("images/block3.png");
-                    blockimg1 = blockimg1.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg1);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0');
+                Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
+
+                //Create Stone
+                if (Field[c][r]->st == 1) {
+                    Field[c][r]->setPixmap(StonePix2);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 2) {
-                    QPixmap blockimg2 = QPixmap("images/block4.png");
-                    blockimg2 = blockimg2.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg2);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Box
+                if (Field[c][r]->st == 2) {
+                    Field[c][r]->setPixmap(BoxPix2);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 3) {
-                    QPixmap blockimg3 = QPixmap("images/bomb.png");
-                    blockimg3 = blockimg3.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg3);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Item1
+                if (Field[c][r]->st == 3) {
+                    Field[c][r]->setPixmap(Item1Pix2);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 4) {
-                    QPixmap blockimg4 = QPixmap("images/flame1.png");
-                    blockimg4 = blockimg4.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg4);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Item2
+                if (Field[c][r]->st == 4) {
+                    Field[c][r]->setPixmap(Item2Pix2);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 5) {
-                    QPixmap blockimg5 = QPixmap("images/powerup1.png");
-                    blockimg5 = blockimg5.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg5);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Item3
+                if (Field[c][r]->st == 5) {
+                    Field[c][r]->setPixmap(Item3Pix2);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 6) {
-                    QPixmap blockimg6 = QPixmap("images/powerup2.png");
-                    blockimg6 = blockimg6.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg6);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Player1
+                if (Field[c][r]->st == 6) {
+                    player1 = new QGraphicsPixmapItem;
+                    player1->setPos(Field[c][r]->x, Field[c][r]->y);
+                    player1->setPixmap(Player1Pix1st1);
+                    player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
-                if (field[c][r]->st == 7) {
-                    QPixmap blockimg7 = QPixmap("images/powerup3.png");
-                    blockimg7 = blockimg7.scaled(BLOCK_SIZE, BLOCK_SIZE);
-                    field[c][r]->setPixmap(blockimg7);
-                    field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //Create Player2
+                if (Field[c][r]->st == 7) {
+                    player2 = new QGraphicsPixmapItem;
+                    player2->setPos(Field[c][r]->x, Field[c][r]->y);
+                    player2->setPixmap(Player2Pix1st1);
+                    player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
+                //Create Bomb
+                //if (Field[c][r]->st == 8) {
+                //    Field[c][r]->setPixmap(BombPix2);
+                //    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //}
+                //Create Flame
+                //if (Field[c][r]->st == 9) {
+                //    Field[c][r]->setPixmap(FlamePix2);
+                //    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //}
             }
         }
         r++;
@@ -179,13 +238,83 @@ void Map::generateMap2()
 
 void Map::generateMap3()
 {
-    width = MAP_WIDTH;
-    height = MAP_HEIGHT;
+    /*------------------Reading Map from TXT-------------------------*/
+    ifstream source("maps/map3.txt"); //"map1.txt"
+    string input;
+    string modified_input;
+    regex reg("[^0-7]");
+    for (int r = 0; r < ROW;) {
+        input.clear();
+        getline(source, input);
+        modified_input = regex_replace(input, reg, "");
+        if (!modified_input.empty())
+        {
+            modified_input.resize(COLUMN, '0');
+        }
+        if ((r < ROW) && (modified_input.empty()))
+        {
+            modified_input = "00000000000000000";
+        }
 
-    //// create the player
-    //player = new Player();
-    //player->setPos(200, 400);
+        /*--------------------Creating Map-------------------------------*/
+        for (int c = 0; c < COLUMN; c++) {
+            if (modified_input[c] != '\0') {
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0');
+                Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
 
+                //Create Stone
+                if (Field[c][r]->st == 1) {
+                    Field[c][r]->setPixmap(StonePix3);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                }
+                //Create Box
+                if (Field[c][r]->st == 2) {
+                    Field[c][r]->setPixmap(BoxPix3);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                }
+                //Create Item1
+                if (Field[c][r]->st == 3) {
+                    Field[c][r]->setPixmap(Item1Pix3);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                }
+                //Create Item2
+                if (Field[c][r]->st == 4) {
+                    Field[c][r]->setPixmap(Item2Pix3);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                }
+                //Create Item3
+                if (Field[c][r]->st == 5) {
+                    Field[c][r]->setPixmap(Item3Pix3);
+                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                }
+                //Create Player1
+                if (Field[c][r]->st == 6) {
+                    player1 = new QGraphicsPixmapItem;
+                    player1->setPos(Field[c][r]->x, Field[c][r]->y);
+                    player1->setPixmap(Player1Pix1st1);
+                    player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                }
+                //Create Player2
+                if (Field[c][r]->st == 7) {
+                    player2 = new QGraphicsPixmapItem;
+                    player2->setPos(Field[c][r]->x, Field[c][r]->y);
+                    player2->setPixmap(Player2Pix1st1);
+                    player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                }
+                //Create Bomb
+                //if (Field[c][r]->st == 8) {
+                //    Field[c][r]->setPixmap(BombPix3);
+                //    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //}
+                //Create Flame
+                //if (Field[c][r]->st == 9) {
+                //    Field[c][r]->setPixmap(FlamePix3);
+                //    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                //}
+            }
+        }
+        r++;
+    }
     mapName = "Map 3";
 }
 
