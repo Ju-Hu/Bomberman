@@ -58,7 +58,8 @@
 #define BOMB_SIZE 20
 #define BOMB_TIMER 5
 
-
+#define X_FIELD 323 //offset
+#define Y_FIELD 53
 
 #define BTN_GAP 50
 

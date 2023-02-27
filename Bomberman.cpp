@@ -9,7 +9,7 @@ Bomberman::Bomberman()
     // init szene
     levelScene = new QGraphicsScene();
     QImage backgroundMap = QImage("images/backgrounds/background_map.png");
-    //background = background.scaled(WINDOW_HEIGHT, WINDOW_WIDTH);
+    //backgroundMap = backgroundMap.scaled(WINDOW_HEIGHT/2, WINDOW_WIDTH/2);
     levelScene->setBackgroundBrush(backgroundMap);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -234,6 +234,8 @@ void Bomberman::openMenu()
         closePause();
     if (victoryMenu->scene() == levelScene)
         closeVictory();
+    if (scene() == editorScene)
+        emit playSound("click");
 
     paused = true;
     Status = InMenu;
@@ -395,7 +397,6 @@ void Bomberman::closeCredits()
 
 void Bomberman::openVictory()
 {
-
     emit playSound("click");
     emit playSound("startPauseMusic");
 
@@ -405,8 +406,8 @@ void Bomberman::openVictory()
     // stop timer
     paused = true;
     Status = Paused;
-    if (playerWon == 1) { victoryMenu->title->setPlainText("Player 1\nWon!"); }
-    if (playerWon == 2) { victoryMenu->title->setPlainText("Player 2\nWon!"); }
+    if (playerWon == 1) { victoryMenu->title->setPlainText("Player 1\n  Wins!"); }
+    if (playerWon == 2) { victoryMenu->title->setPlainText("Player 2\n  Wins!"); }
 
     levelScene->addItem(victoryMenu);
     levelScene->addWidget(victoryMenu->getBackMenuBtn2());
@@ -431,6 +432,7 @@ void Bomberman::closeVictory()
 // Editor--------------------------------------------------------------------------------------
 void Bomberman::openEditor()
 {
+    emit playSound("click");
     // Show mouse cursor
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 
@@ -441,8 +443,7 @@ void Bomberman::openEditor()
 
 void Bomberman::clickedEdit(int btnIndex)
 {
-    //changeEdit(1, 0);
-    qDebug() << btnIndex;
+    emit playSound("click");
     for (int r = 0; r < ROW;) {
         for (int c = 0; c < COLUMN; c++) {
             if (editorScene->editField[c][r]->btnID == btnIndex)
@@ -477,30 +478,37 @@ void Bomberman::clickedEdit(int btnIndex)
 }
 void Bomberman::loadEdit1()
 {
+    emit playSound("click");
     editorScene->loadEditor(1);
 }
 void Bomberman::loadEdit2()
 {
+    emit playSound("click");
     editorScene->loadEditor(2);
 }
 void Bomberman::loadEdit3()
 {
+    emit playSound("click");
     editorScene->loadEditor(3);
 }
 void Bomberman::loadEdit4()
 {
+    emit playSound("click");
     editorScene->loadEditor(4);
 }
 void Bomberman::saveEdit1()
 {
+    emit playSound("click");
     editorScene->saveEditor(1);
 }
 void Bomberman::saveEdit2()
 {
+    emit playSound("click");
     editorScene->saveEditor(2);
 }
 void Bomberman::saveEdit3()
 {
+    emit playSound("click");
     editorScene->saveEditor(3);
 }
 
