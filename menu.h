@@ -23,6 +23,8 @@ public:
 
     MenuButton* getLvl3Btn() const;
 
+    MenuButton* getEditBtn() const;
+
     MenuButton* getQuitBtn() const;
 
     void setMenuSprite(QString menuImage);
@@ -40,6 +42,8 @@ private:
     MenuButton* Lvl2Btn;
 
     MenuButton* Lvl3Btn;
+
+    MenuButton* EditBtn;
 
     MenuButton* QuitBtn;
 

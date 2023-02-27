@@ -1,10 +1,6 @@
 // Game engine
 #include "Bomberman.h"
 
-//test
-//// init windowsize
-//int windowWidth = WINDOW_WIDTH;
-//int windowHeight = WINDOW_HEIGHT;
 
 Bomberman::Bomberman()
 {
@@ -44,16 +40,33 @@ Bomberman::Bomberman()
     // init main menu
     menuScene = new Menu();
 
-    //connect(menuScene, &Menu::getVolume, soundManager, &Sound::setVolume);
-
     connect(menuScene->getLvl1Btn(), SIGNAL(clicked()), this, SLOT(clicked1()));
     connect(menuScene->getLvl2Btn(), SIGNAL(clicked()), this, SLOT(clicked2()));
     connect(menuScene->getLvl3Btn(), SIGNAL(clicked()), this, SLOT(clicked3()));
-    //connect(menuScene->volumeSlider, SIGNAL(valueChanged()), soundManager, SLOT(setVolume())); //getVolume() //valueChanged()
-
-    //connect(buttonMenuMapper, SIGNAL(mapped(QString)), this, SLOT(loadMap(QString)));
-    // link quit button in menu
+    connect(menuScene->getEditBtn(), SIGNAL(clicked()), this, SLOT(openEditor()));
     connect(menuScene->getQuitBtn(), SIGNAL(clicked()), this, SLOT(quitApp()));
+
+    // init Editor menu-----------------------------------------------------------------------------------------
+    editorScene = new Editor();
+    connect(editorScene->getMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
+    connect(editorScene->loadLvl1Btn(), SIGNAL(clicked()), this, SLOT(loadEdit1()));
+    connect(editorScene->loadLvl2Btn(), SIGNAL(clicked()), this, SLOT(loadEdit2()));
+    connect(editorScene->loadLvl3Btn(), SIGNAL(clicked()), this, SLOT(loadEdit3()));
+    connect(editorScene->loadLvl4Btn(), SIGNAL(clicked()), this, SLOT(loadEdit4()));
+    connect(editorScene->setLvl1Btn(), SIGNAL(clicked()), this, SLOT(saveEdit1()));
+    connect(editorScene->setLvl2Btn(), SIGNAL(clicked()), this, SLOT(saveEdit2()));
+    connect(editorScene->setLvl3Btn(), SIGNAL(clicked()), this, SLOT(saveEdit3()));
+
+    buttonEditorMapper = new QSignalMapper(this);
+    for (int r = 0; r < ROW;) {
+        for (int c = 0; c < COLUMN; c++) {
+            connect(editorScene->editField[c][r], SIGNAL(clicked()), buttonEditorMapper, SLOT(map()));
+            buttonEditorMapper->setMapping(editorScene->editField[c][r], editorScene->editField[c][r]->btnID);
+        }
+        r++;
+    }
+    connect(buttonEditorMapper, SIGNAL(mapped(int)), this, SLOT(clickedEdit(int)));
+    // -----------------------------------------------------------------------------------------------------------
 
     // init pause menu
     pauseMenu = new Pause();
@@ -62,12 +75,12 @@ Bomberman::Bomberman()
     paused = false;
     Status = Paused;
 
+    // init credits menu
     creditsMenu = new Credits();
 
-    //openMenu();
-    //openGame();
-
-    //showFullScreen();
+    // init victory menu
+    victoryMenu = new Victory();
+    connect(victoryMenu->getBackMenuBtn2(), SIGNAL(clicked()), this, SLOT(openMenu()));
 }
 
 Bomberman::~Bomberman()
@@ -137,7 +150,16 @@ void Bomberman::keyPressEvent(QKeyEvent* event)
             showFullScreen();
     }
 
+    if (event->key() == Qt::Key_O) {
+        if (scene() == levelScene) {
+            if (pauseMenu->scene() != levelScene) {
+                if (victoryMenu->scene() != levelScene) {
+                    openVictory();
+                }
 
+            }
+        }
+    }
 }
 
 void Bomberman::keyReleaseEvent(QKeyEvent* event)
@@ -176,13 +198,15 @@ void Bomberman::resizeEvent(QResizeEvent* event)
         levelScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);*/
     // Scale the view to the new size
     QRect rect = QRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    fitInView(rect);
+    fitInView(rect, Qt::KeepAspectRatio);
 }
 
 void Bomberman::openMenu()
 {
-    if (paused == true)
+    if (pauseMenu->scene() == levelScene)
         closePause();
+    if (victoryMenu->scene() == levelScene)
+        closeVictory();
 
     paused = true;
     Status = InMenu;
@@ -252,7 +276,6 @@ void Bomberman::clicked3()
     }
     levelScene->addItem(map->player1);
     levelScene->addItem(map->player2);
-
     openGame();
 }
 
@@ -271,7 +294,7 @@ void Bomberman::openGame()
     
     setScene(levelScene);
     paused = false;
-Status = InGame;
+    Status = InGame;
 
 }
 
@@ -317,14 +340,15 @@ void Bomberman::openCredits()
 {
     emit playSound("click");
     emit playSound("startPauseMusic");
-    QApplication::setOverrideCursor(Qt::BlankCursor);
     menuScene->removeItem(menuScene->getLvl1Btn()->graphicsProxyWidget());
     menuScene->removeItem(menuScene->getLvl2Btn()->graphicsProxyWidget());
     menuScene->removeItem(menuScene->getLvl3Btn()->graphicsProxyWidget());
+    menuScene->removeItem(menuScene->getEditBtn()->graphicsProxyWidget());
     menuScene->removeItem(menuScene->getQuitBtn()->graphicsProxyWidget());
     menuScene->getLvl1Btn()->graphicsProxyWidget()->setWidget(NULL);
     menuScene->getLvl2Btn()->graphicsProxyWidget()->setWidget(NULL);
     menuScene->getLvl3Btn()->graphicsProxyWidget()->setWidget(NULL);
+    menuScene->getEditBtn()->graphicsProxyWidget()->setWidget(NULL);
     menuScene->getQuitBtn()->graphicsProxyWidget()->setWidget(NULL);
 
     menuScene->addItem(creditsMenu);
@@ -334,13 +358,124 @@ void Bomberman::closeCredits()
 {
     emit playSound("click");
     emit playSound("stopPauseMusic");
-    QApplication::setOverrideCursor(Qt::ArrowCursor);
     menuScene->addWidget(menuScene->getLvl1Btn());
     menuScene->addWidget(menuScene->getLvl2Btn());
     menuScene->addWidget(menuScene->getLvl3Btn());
+    menuScene->addWidget(menuScene->getEditBtn());
     menuScene->addWidget(menuScene->getQuitBtn());
     menuScene->removeItem(creditsMenu);
 }
+
+void Bomberman::openVictory()
+{
+
+    emit playSound("click");
+    emit playSound("startPauseMusic");
+
+    // Show mouse cursor
+    QApplication::setOverrideCursor(Qt::ArrowCursor);
+
+    // stop timer
+    paused = true;
+    Status = Paused;
+
+    levelScene->addItem(victoryMenu);
+    levelScene->addWidget(victoryMenu->getBackMenuBtn2());
+}
+
+void Bomberman::closeVictory()
+{
+    emit playSound("click");
+    emit playSound("stopPauseMusic");
+
+    // hide mouse cursor
+    QApplication::setOverrideCursor(Qt::BlankCursor);
+
+    // remove pause component from scene
+    levelScene->removeItem(victoryMenu);
+    levelScene->removeItem(victoryMenu->getBackMenuBtn2()->graphicsProxyWidget());
+    // reset proxy
+    victoryMenu->getBackMenuBtn2()->graphicsProxyWidget()->setWidget(NULL);
+}
+
+// Editor--------------------------------------------------------------------------------------
+void Bomberman::openEditor()
+{
+    // Show mouse cursor
+    QApplication::setOverrideCursor(Qt::ArrowCursor);
+
+
+    // replace scene by Editor scene
+    setScene(editorScene);
+}
+
+void Bomberman::clickedEdit(int btnIndex)
+{
+    //changeEdit(1, 0);
+    qDebug() << btnIndex;
+    for (int r = 0; r < ROW;) {
+        for (int c = 0; c < COLUMN; c++) {
+            if (editorScene->editField[c][r]->btnID == btnIndex)
+            {
+                editStatus = editorScene->editField[c][r]->st;
+                editStatus++;
+                if (editStatus <= 7)
+                {
+                    editorScene->editField[c][r]->text = QString::number(editStatus);
+                    //editorScene->editField[c][r]->setText(editorScene->editField[c][r]->text);
+                    editorScene->editField[c][r]->st = editStatus;
+                    if (editorScene->editField[c][r]->st == 1) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/block3.png);"); }
+                    if (editorScene->editField[c][r]->st == 2) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/block4.png);"); }
+                    if (editorScene->editField[c][r]->st == 3) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup1.png);"); }
+                    if (editorScene->editField[c][r]->st == 4) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup2.png);"); }
+                    if (editorScene->editField[c][r]->st == 5) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup3.png);"); }
+                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/3.png);"); }
+                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/2.png);"); }
+                }
+                if (editStatus == 8)
+                {
+                    editStatus = 0;
+                    editorScene->editField[c][r]->text = QString::number(editStatus);
+                    //editorScene->editField[c][r]->setText(editorScene->editField[c][r]->text);
+                    editorScene->editField[c][r]->st = editStatus;
+                    if (editorScene->editField[c][r]->st == 0) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/block0.png);"); }
+                }
+            }
+        }
+        r++;
+    }
+}
+void Bomberman::loadEdit1()
+{
+    editorScene->loadEditor(1);
+}
+void Bomberman::loadEdit2()
+{
+    editorScene->loadEditor(2);
+}
+void Bomberman::loadEdit3()
+{
+    editorScene->loadEditor(3);
+}
+void Bomberman::loadEdit4()
+{
+    editorScene->loadEditor(4);
+}
+void Bomberman::saveEdit1()
+{
+    editorScene->saveEditor(1);
+}
+void Bomberman::saveEdit2()
+{
+    editorScene->saveEditor(2);
+}
+void Bomberman::saveEdit3()
+{
+    editorScene->saveEditor(3);
+}
+
+
+//----------------------------------------------------------------------------------------------------
 
 void Bomberman::animate()
 {

@@ -47,6 +47,8 @@ public:
 
 	QGraphicsPixmapItem* player1;
 	QGraphicsPixmapItem* player2;
+	int* Playercount1;
+	int* Playercount2;
 
 	//Pixmaps for Player1
 	QPixmap Player1Pix1st1 = QPixmap("images/player/1.png");
