@@ -133,7 +133,7 @@ void Bomberman::keyPressEvent(QKeyEvent* event)
     }
     if (event->key() == Qt::Key_Space) {
         //Bomb placement Player2
-        if (bombKey2old == false || bombChain2 == true) {
+        if (scene() == levelScene && (bombKey2old == false || bombChain2 == true)) {
             bombKey2old = true;
             int x2 = map->player2->x();
             int y2 = map->player2->y();
@@ -145,7 +145,7 @@ void Bomberman::keyPressEvent(QKeyEvent* event)
     }
     if (event->key() == Qt::Key_Enter|| event->key() == Qt::Key_Return) {
         //Bomb placement Player1
-        if (bombKey1old == false|| bombChain1 == true) {
+        if (scene() == levelScene && (bombKey1old == false || bombChain1 == true)) {
             bombKey1old = true;
             int x1= map->player1->x();
             int y1= map->player1->y();
@@ -210,7 +210,7 @@ void Bomberman::keyReleaseEvent(QKeyEvent* event)
     if (event->key() == Qt::Key_Space) {
         bombKey2old = false;
     }
-    if (event->key() == Qt::Key_Enter) {
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         bombKey1old = false;
     }
 }
