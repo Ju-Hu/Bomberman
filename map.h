@@ -8,18 +8,20 @@ class clBlock : public QObject, public QGraphicsPixmapItem
 {
 public:
 	//--- Konstruktor ---
-	clBlock(int _x, int _y, int _w, int _h, int _st) {
+	clBlock(int _x, int _y, int _w, int _h, int _st, int _time) {
 		x = _x;
 		y = _y;
 		w = _w;
 		h = _h;
 		st = _st;
+		time = _time;
 	}
 	int x;
 	int y;
 	int w;
 	int h;
 	int st;
+	int time;
 };
 
 void Scale(QPixmap* Pix);
@@ -47,6 +49,8 @@ public:
 
 	QGraphicsPixmapItem* player1;
 	QGraphicsPixmapItem* player2;
+	int* Playercount1;
+	int* Playercount2;
 
 	//Pixmaps for Player1
 	QPixmap Player1Pix1st1 = QPixmap("images/player/player1/stop1.png");
@@ -79,6 +83,7 @@ public:
 	QPixmap Player2Pix1dead = QPixmap("images/player/player2/dead.png");
 
 	//Pixmaps
+  QPixmap BlockNullPix = QPixmap("images/NULL.png");
 	QPixmap BombPix1 =	QPixmap("images/bomb.png");
 	QPixmap FlamePix1 = QPixmap("images/flame1.png");
 	QPixmap FlamePix2 = QPixmap("images/flame2.png");

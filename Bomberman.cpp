@@ -29,9 +29,14 @@ Bomberman::Bomberman()
     refreshTimer = new QTimer(this);
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
     refreshTimer->start(1000 / FPS);
+    
     animationTimer = new QTimer(this);
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(animate()));
     animationTimer->start(200);
+    
+    secTimer = new QTimer(this);
+    connect(secTimer, SIGNAL(timeout()), this, SLOT(second()));
+    secTimer->start(500);
 
     
  
@@ -95,6 +100,8 @@ Bomberman::~Bomberman()
     delete soundManager;
 }
 
+
+
 void Bomberman::keyPressEvent(QKeyEvent* event)
 {
     //--- Pfeil-Tasten ---
@@ -126,6 +133,30 @@ void Bomberman::keyPressEvent(QKeyEvent* event)
     }
     if (event->key() == Qt::Key_S) {
         downKey2 = true;
+    }
+    if (event->key() == Qt::Key_Space) {
+        //Bomb placement Player2
+        if (scene() == levelScene && (bombKey2old == false || bombChain2 == true)) {
+            bombKey2old = true;
+            int x2 = map->player2->x();
+            int y2 = map->player2->y();
+            x2 = (int(x2 + BLOCK_SIZE / 2) / BLOCK_SIZE);
+            y2 = (int(y2 + BLOCK_SIZE / 2) / BLOCK_SIZE);
+            map->Field[x2][y2]->st = 8;
+            map->Field[x2][y2]->setPixmap(Map().BombPix1);
+        }
+    }
+    if (event->key() == Qt::Key_Enter|| event->key() == Qt::Key_Return) {
+        //Bomb placement Player1
+        if (scene() == levelScene && (bombKey1old == false || bombChain1 == true)) {
+            bombKey1old = true;
+            int x1= map->player1->x();
+            int y1= map->player1->y();
+            x1 = (int(x1 + BLOCK_SIZE / 2) / BLOCK_SIZE);
+            y1 = (int(y1 + BLOCK_SIZE / 2) / BLOCK_SIZE);
+            map->Field[x1][y1]->st = 8;
+            map->Field[x1][y1]->setPixmap(Map().BombPix1);
+        }
     }
 
     if (event->key() == Qt::Key_Escape) {
@@ -178,6 +209,12 @@ void Bomberman::keyReleaseEvent(QKeyEvent* event)
     }
     if (event->key() == Qt::Key_S) {
         downKey2 = false;
+    }
+    if (event->key() == Qt::Key_Space) {
+        bombKey2old = false;
+    }
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        bombKey1old = false;
     }
 }
 
@@ -266,7 +303,6 @@ void Bomberman::clicked3()
     }
     levelScene->addItem(map->player1);
     levelScene->addItem(map->player2);
-
     openGame();
 }
 
@@ -587,6 +623,84 @@ void Bomberman::animate()
                 map->player2->setPixmap(map->Player2Pix1st4);
             }break;
         }
+
+    }
+}
+
+void Bomberman::second() 
+{
+    if (Status == InGame) {
+
+        for (int c = 0; c < COLUMN; c++) {
+            for (int r = 0; r < ROW; r++) {
+                if (map->Field[c][r]->st == 0 && map->Field[c][r]->time > 0) {
+                    map->Field[c][r]->time = 0;
+                }
+                if (map->Field[c][r]->st == 8) {
+                    map->Field[c][r]->time = map->Field[c][r]->time +1;
+
+                    if (map->Field[c][r]->time >= 6) {
+                        map->Field[c][r]->time = map->Field[c][r]->time + 1;
+                        Flame(c, r);
+                    }
+                }
+                if (map->Field[c][r]->st == 9) {
+                    map->Field[c][r]->time = map->Field[c][r]->time +1;
+                    if (map->Field[c][r]->time >= 14) {
+                        FlameRemove(c, r);
+                       
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+void Bomberman::Flame(int x, int y) {
+    if (map->Field[x][y]->st != 9) {
+        map->Field[x][y]->st = 9;
+        map->Field[x][y]->setPixmap(Map().FlamePix1);
+    }
+
+    if (map->Field[x+1][y]->st != 1 && map->Field[x + 1][y]->st != 9) {
+        map->Field[x+1][y]->st = 9;
+        map->Field[x+1][y]->setPixmap(Map().FlamePix1);
+    }
+    if (map->Field[x - 1][y]->st != 1 && map->Field[x - 1][y]->st != 9) {
+        map->Field[x - 1][y]->st = 9;
+        map->Field[x - 1][y]->setPixmap(Map().FlamePix1);
+    }
+    if (map->Field[x ][y + 1]->st != 1 && map->Field[x ][y+ 1]->st != 9) {
+        map->Field[x ][y + 1]->st = 9;
+        map->Field[x ][y + 1]->setPixmap(Map().FlamePix1);
+    }
+    if (map->Field[x][y - 1]->st != 1 && map->Field[x ][y- 1]->st != 9) {
+        map->Field[x][y - 1]->st = 9;
+        map->Field[x][y - 1]->setPixmap(Map().FlamePix1);
+    }
+}
+
+void Bomberman::FlameRemove(int x, int y) {
+    map->Field[x][y]->time = 0;
+    map->Field[x][y]->st = 0;
+    map->Field[x][y]->setPixmap(Map().BlockNullPix);
+
+    if (map->Field[x + 1][y]->st == 9 ) {
+        map->Field[x + 1][y]->st = 0;
+        map->Field[x + 1][y]->setPixmap(Map().BlockNullPix);
+    }
+    if (map->Field[x - 1][y]->st == 9) {
+        map->Field[x - 1][y]->st = 0;
+        map->Field[x - 1][y]->setPixmap(Map().BlockNullPix);
+    }
+    if (map->Field[x][y + 1]->st == 9 ) {
+        map->Field[x][y + 1]->st = 0;
+        map->Field[x][y + 1]->setPixmap(Map().BlockNullPix);
+    }
+    if (map->Field[x][y - 1]->st == 9 ) {
+        map->Field[x][y - 1]->st = 0;
+        map->Field[x][y - 1]->setPixmap(Map().BlockNullPix);
     }
 }
 
@@ -841,8 +955,14 @@ void Bomberman::refresh()
             {
                 if (!collidingP1.isEmpty()) {
                     if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 9){ //Flamme
-                        playerWon = 1;
-                        openVictory();
+                        if (scene() == levelScene) {
+                            if (pauseMenu->scene() != levelScene) {
+                                if (victoryMenu->scene() != levelScene) {
+                                    playerWon = 1;
+                                    openVictory();
+                                }
+                            }
+                        }
                     }
                     if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
                         
@@ -868,8 +988,14 @@ void Bomberman::refresh()
             {
                 if (!collidingP2.isEmpty()) {
                     if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 9) { //Flamme
-                        playerWon = 2;
-                        openVictory();
+                        if (scene() == levelScene) {
+                            if (pauseMenu->scene() != levelScene) {
+                                if (victoryMenu->scene() != levelScene) {
+                                    playerWon = 2;
+                                    openVictory();
+                                }
+                            }
+                        }
                     }
                     if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
 
@@ -886,7 +1012,6 @@ void Bomberman::refresh()
                 }
             }
         }
-        
 
 
      }
@@ -900,6 +1025,7 @@ void Bomberman::refresh()
 
     
 }
+
 
 
    
