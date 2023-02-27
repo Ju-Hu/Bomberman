@@ -4,7 +4,7 @@
 Menu::Menu() : QGraphicsScene()
 {
     int xButton = 200;
-    int yStartButton = 200;
+    int yStartButton = 100;
     // Create window scene with background
     //this->setSceneRect(0, 0, MAP_WIDTH, MAP_HEIGHT);
     QImage background = QImage("images/backgrounds/background_menu.png");
@@ -81,7 +81,7 @@ Menu::Menu() : QGraphicsScene()
     QFont font = QFont("Agency FB", 100);
     font.setBold(true);
     title->setFont(font);
-    title->setPos(900, 200);
+    title->setPos(940, 200);
     this->addItem(title);
 
     // Fullscreen Text

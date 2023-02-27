@@ -138,6 +138,7 @@ private:
     QSignalMapper* buttonEditorMapper;
 
     int anim = 0;
+    int standAnim = 0;
 
     Map *map;
 };

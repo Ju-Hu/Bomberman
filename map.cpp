@@ -9,6 +9,8 @@ Map::Map()
 
     Scale(&Player1Pix1st1);
     Scale(&Player1Pix1st2);
+    Scale(&Player1Pix1st3);
+    Scale(&Player1Pix1st4);
     Scale(&Player1Pix1up1);
     Scale(&Player1Pix1up2);
     Scale(&Player1Pix1dw1);
@@ -19,6 +21,8 @@ Map::Map()
     Scale(&Player1Pix1ri2);
     Scale(&Player2Pix1st1);
     Scale(&Player2Pix1st2);
+    Scale(&Player2Pix1st3);
+    Scale(&Player2Pix1st4);
     Scale(&Player2Pix1up1);
     Scale(&Player2Pix1up2);
     Scale(&Player2Pix1dw1);
