@@ -9,6 +9,8 @@ Map::Map()
 
     Scale(&Player1Pix1st1);
     Scale(&Player1Pix1st2);
+    Scale(&Player1Pix1st3);
+    Scale(&Player1Pix1st4);
     Scale(&Player1Pix1up1);
     Scale(&Player1Pix1up2);
     Scale(&Player1Pix1dw1);
@@ -17,8 +19,12 @@ Map::Map()
     Scale(&Player1Pix1lf2);
     Scale(&Player1Pix1ri1);
     Scale(&Player1Pix1ri2);
+    Scale(&Player1Pix1dead);
+
     Scale(&Player2Pix1st1);
     Scale(&Player2Pix1st2);
+    Scale(&Player2Pix1st3);
+    Scale(&Player2Pix1st4);
     Scale(&Player2Pix1up1);
     Scale(&Player2Pix1up2);
     Scale(&Player2Pix1dw1);
@@ -27,43 +33,32 @@ Map::Map()
     Scale(&Player2Pix1lf2);
     Scale(&Player2Pix1ri1);
     Scale(&Player2Pix1ri2);
+    Scale(&Player2Pix1dead);
 
-    Scale(&StonePix1);
-    Scale(&BoxPix1);
+    Scale(&BlockNullPix);
+
     Scale(&BombPix1);
     Scale(&FlamePix1);
+    Scale(&FlamePix2);
+    Scale(&FlamePix3);
     Scale(&Item1Pix1);
     Scale(&Item2Pix1);
     Scale(&Item3Pix1);
 
+    Scale(&StonePix1);
+    Scale(&BoxPix1);
+
     Scale(&StonePix2);
     Scale(&BoxPix2);
-    Scale(&BombPix2);
-    Scale(&FlamePix2);
-    Scale(&Item1Pix2);
-    Scale(&Item2Pix2);
-    Scale(&Item3Pix2);
-    Scale(&Player1Pix2);
-    Scale(&Player2Pix2);
 
     Scale(&StonePix3);
     Scale(&BoxPix3);
-    Scale(&BombPix3);
-    Scale(&FlamePix3);
-    Scale(&Item1Pix3);
-    Scale(&Item2Pix3);
-    Scale(&Item3Pix3);
-    Scale(&Player1Pix3);
-    Scale(&Player2Pix3);
-
-
 }
 
 Map::~Map()
 {
     //clearMap();
 }
-
 
 void Scale(QPixmap* Pix) {
     *Pix= Pix->scaled(BLOCK_SIZE, BLOCK_SIZE);
@@ -95,40 +90,41 @@ void Map::generateMap1()
     /*--------------------Creating Map-------------------------------*/
         for (int c = 0; c < COLUMN; c++) {
             if (modified_input[c] != '\0') {
-                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0');
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0',0);
                 Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
+                Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
                 
                 //Create Stone
                 if (Field[c][r]->st == 1) {
                     Field[c][r]->setPixmap(StonePix1);
-                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                   // Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Box
                 if (Field[c][r]->st == 2) {
                     Field[c][r]->setPixmap(BoxPix1);
-                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                   // Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Item1
                 if (Field[c][r]->st == 3) {
                     Field[c][r]->setPixmap(Item1Pix1);
-                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                   // Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Item2
                 if (Field[c][r]->st == 4) {
                     Field[c][r]->setPixmap(Item2Pix1);
-                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                   // Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Item3
                 if (Field[c][r]->st == 5) {
                     Field[c][r]->setPixmap(Item3Pix1);
-                    Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                   // Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Player1
                 if (Field[c][r]->st == 6) {
                     player1 = new QGraphicsPixmapItem;
                     player1->setPos(Field[c][r]->x, Field[c][r]->y);
                     player1->setPixmap(Player1Pix1st1);
-                    player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                    //player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                     Playercount1++;
                 }
                 //Create Player2
@@ -136,7 +132,7 @@ void Map::generateMap1()
                     player2 = new QGraphicsPixmapItem;
                     player2->setPos(Field[c][r]->x, Field[c][r]->y);
                     player2->setPixmap(Player2Pix1st1);
-                    player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                   // player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                     Playercount2++;
                 }
                 //Create Bomb
@@ -196,7 +192,7 @@ void Map::generateMap2()
         /*--------------------Creating Map-------------------------------*/
         for (int c = 0; c < COLUMN; c++) {
             if (modified_input[c] != '\0') {
-                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0');
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0', 0);
                 Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
 
                 //Create Stone
@@ -211,17 +207,17 @@ void Map::generateMap2()
                 }
                 //Create Item1
                 if (Field[c][r]->st == 3) {
-                    Field[c][r]->setPixmap(Item1Pix2);
+                    Field[c][r]->setPixmap(Item1Pix1);
                     Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Item2
                 if (Field[c][r]->st == 4) {
-                    Field[c][r]->setPixmap(Item2Pix2);
+                    Field[c][r]->setPixmap(Item2Pix1);
                     Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Item3
                 if (Field[c][r]->st == 5) {
-                    Field[c][r]->setPixmap(Item3Pix2);
+                    Field[c][r]->setPixmap(Item3Pix1);
                     Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Player1
@@ -298,7 +294,7 @@ void Map::generateMap3()
         /*--------------------Creating Map-------------------------------*/
         for (int c = 0; c < COLUMN; c++) {
             if (modified_input[c] != '\0') {
-                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0');
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0', 0);
                 Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
 
                 //Create Stone
@@ -313,17 +309,17 @@ void Map::generateMap3()
                 }
                 //Create Item1
                 if (Field[c][r]->st == 3) {
-                    Field[c][r]->setPixmap(Item1Pix3);
+                    Field[c][r]->setPixmap(Item1Pix1);
                     Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Item2
                 if (Field[c][r]->st == 4) {
-                    Field[c][r]->setPixmap(Item2Pix3);
+                    Field[c][r]->setPixmap(Item2Pix1);
                     Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Item3
                 if (Field[c][r]->st == 5) {
-                    Field[c][r]->setPixmap(Item3Pix3);
+                    Field[c][r]->setPixmap(Item3Pix1);
                     Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
                 }
                 //Create Player1

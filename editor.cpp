@@ -4,7 +4,7 @@ using namespace std;
 Editor::Editor() : QGraphicsScene()
 {
 
-    QImage background = QImage("images/backgrounds/background_map.png");
+    QImage background = QImage("images/backgrounds/background_menu2.png");
     this->setBackgroundBrush(background);
 
     int xButton = 10;
@@ -152,7 +152,7 @@ Editor::Editor() : QGraphicsScene()
                     editField[c][r]->resize(75, 75);
                     editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
                     //editField[c][r]->setText(editField[c][r]->text);
-                    editField[c][r]->setStyleSheet("border-image:url(images/player/3.png);");
+                    editField[c][r]->setStyleSheet("border-image:url(images/player/player1/stop1.png);");
                     this->addWidget(editField[c][r]);
                 }
                 if (modified_input[c] - '0' == 7) {
@@ -160,7 +160,7 @@ Editor::Editor() : QGraphicsScene()
                     editField[c][r]->resize(75, 75);
                     editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
                     //editField[c][r]->setText(editField[c][r]->text);
-                    editField[c][r]->setStyleSheet("border-image:url(images/player/2.png);");
+                    editField[c][r]->setStyleSheet("border-image:url(images/player/player2/stop1.png);");
                     this->addWidget(editField[c][r]);
                 }
                 btnindex++;
@@ -278,13 +278,13 @@ void Editor::loadEditor(int loadTXT)
                     editField[c][r]->st = 6;
                     editField[c][r]->text = QString::number(6);
                     //editField[c][r]->setText(editField[c][r]->text);
-                    editField[c][r]->setStyleSheet("border-image:url(images/player/3.png);");
+                    editField[c][r]->setStyleSheet("border-image:url(images/player/player1/stop1.png);");
                 }
                 if (modified_inputString[c] - '0' == 7) {
                     editField[c][r]->st = 7;
                     editField[c][r]->text = QString::number(7);
                     //editField[c][r]->setText(editField[c][r]->text);
-                    editField[c][r]->setStyleSheet("border-image:url(images/player/2.png);");
+                    editField[c][r]->setStyleSheet("border-image:url(images/player/player2/stop1.png);");
                 }
                 btnindex++;
             }

@@ -61,16 +61,30 @@ public:
     bool rightKey2 = false;
     bool upKey2 = false;
     bool downKey2 = false;
+    bool bombKey1old = false;
+    bool bombKey2old = false;
+    bool bombChain1 = false;
+    bool bombChain2 = false;
+
+    
+
     int StatusPlayer1 =0;
     int StatusPlayer2 = 0;
 
     int editStatus = 0;
 
+    int playerWon = 0;
+
     void resizeEvent(QResizeEvent* event);
 
     void openCredits();
 
-    void openVictory();
+    void openVictory();   
+
+
+    void Flame(int x, int y);
+    void FlameRemove(int x, int y);
+
 
 public slots:
 
@@ -92,6 +106,8 @@ public slots:
 
     void animate();
 
+    void second();
+
     void refresh();
 
     void clickedEdit(int btnIndex);
@@ -104,6 +120,7 @@ public slots:
     void saveEdit1();
     void saveEdit2();
     void saveEdit3();
+
 
 signals:
     void playSound(QString);
@@ -135,11 +152,16 @@ private:
 
     QTimer* animationTimer;
 
+    QTimer* secTimer;
+
     QSignalMapper* buttonEditorMapper;
 
     int anim = 0;
+    int standAnim = 0;
 
     Map *map;
+
+
 };
 
 #endif
