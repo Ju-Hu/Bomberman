@@ -71,6 +71,8 @@ void Scale(QPixmap* Pix) {
 
 void Map::generateMap1()
 {
+    Playercount1 = new int(0);
+    Playercount2 = new int(0);
 
     /*------------------Reading Map from TXT-------------------------*/
     ifstream source("maps/map1.txt"); //"map1.txt"
@@ -127,6 +129,7 @@ void Map::generateMap1()
                     player1->setPos(Field[c][r]->x, Field[c][r]->y);
                     player1->setPixmap(Player1Pix1st1);
                     player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                    Playercount1++;
                 }
                 //Create Player2
                 if (Field[c][r]->st == 7) {
@@ -134,6 +137,7 @@ void Map::generateMap1()
                     player2->setPos(Field[c][r]->x, Field[c][r]->y);
                     player2->setPixmap(Player2Pix1st1);
                     player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                    Playercount2++;
                 }
                 //Create Bomb
                 //if (Field[c][r]->st == 8) {
@@ -150,11 +154,27 @@ void Map::generateMap1()
         r++;
     }
 
+    if (*Playercount1 == 0) {
+        player1 = new QGraphicsPixmapItem;
+        player1->setPos(Field[COLUMN-2][ROW -2]->x, Field[COLUMN - 2][ROW - 2]->y);
+        player1->setPixmap(Player1Pix1st1);
+        player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+    }
+    if (*Playercount2 == 0) {
+        player2 = new QGraphicsPixmapItem;
+        player2->setPos(Field[1][1]->x, Field[1][1]->y);
+        player2->setPixmap(Player2Pix1st1);
+        player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+    }
     mapName = "Map 1";
 }
 
 void Map::generateMap2()
 {
+    Playercount1 = new int(0);
+    Playercount2 = new int(0);
+
+
     /*------------------Reading Map from TXT-------------------------*/
     ifstream source("maps/map2.txt"); //"map1.txt"
     string input;
@@ -210,6 +230,7 @@ void Map::generateMap2()
                     player1->setPos(Field[c][r]->x, Field[c][r]->y);
                     player1->setPixmap(Player1Pix1st1);
                     player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                    Playercount1++;
                 }
                 //Create Player2
                 if (Field[c][r]->st == 7) {
@@ -217,6 +238,8 @@ void Map::generateMap2()
                     player2->setPos(Field[c][r]->x, Field[c][r]->y);
                     player2->setPixmap(Player2Pix1st1);
                     player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                    Playercount2++;
+
                 }
                 //Create Bomb
                 //if (Field[c][r]->st == 8) {
@@ -233,11 +256,27 @@ void Map::generateMap2()
         r++;
     }
 
+    if (*Playercount1 == 0) {
+        player1 = new QGraphicsPixmapItem;
+        player1->setPos(Field[COLUMN - 2][ROW - 2]->x, Field[COLUMN - 2][ROW - 2]->y);
+        player1->setPixmap(Player1Pix1st1);
+        player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+    }
+    if (*Playercount2 == 0) {
+        player2 = new QGraphicsPixmapItem;
+        player2->setPos(Field[1][1]->x, Field[1][1]->y);
+        player2->setPixmap(Player2Pix1st1);
+        player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+    }
     mapName = "Map 2";
 }
 
 void Map::generateMap3()
 {
+    Playercount1 = new int(0);
+    Playercount2 = new int(0);
+
+
     /*------------------Reading Map from TXT-------------------------*/
     ifstream source("maps/map3.txt"); //"map1.txt"
     string input;
@@ -293,6 +332,7 @@ void Map::generateMap3()
                     player1->setPos(Field[c][r]->x, Field[c][r]->y);
                     player1->setPixmap(Player1Pix1st1);
                     player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                    Playercount1++;
                 }
                 //Create Player2
                 if (Field[c][r]->st == 7) {
@@ -300,6 +340,7 @@ void Map::generateMap3()
                     player2->setPos(Field[c][r]->x, Field[c][r]->y);
                     player2->setPixmap(Player2Pix1st1);
                     player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape); //MaskShape
+                    Playercount2++;
                 }
                 //Create Bomb
                 //if (Field[c][r]->st == 8) {
@@ -314,6 +355,19 @@ void Map::generateMap3()
             }
         }
         r++;
+    }
+
+    if (*Playercount1 == 0) {
+        player1 = new QGraphicsPixmapItem;
+        player1->setPos(Field[COLUMN - 2][ROW - 2]->x, Field[COLUMN - 2][ROW - 2]->y);
+        player1->setPixmap(Player1Pix1st1);
+        player1->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+    }
+    if (*Playercount2 == 0) {
+        player2 = new QGraphicsPixmapItem;
+        player2->setPos(Field[1][1]->x, Field[1][1]->y);
+        player2->setPixmap(Player2Pix1st1);
+        player2->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
     }
     mapName = "Map 3";
 }
