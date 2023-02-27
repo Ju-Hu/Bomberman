@@ -73,6 +73,8 @@ public:
 
     int editStatus = 0;
 
+    int playerWon = 0;
+
     void resizeEvent(QResizeEvent* event);
 
     void openCredits();
@@ -155,6 +157,7 @@ private:
     QSignalMapper* buttonEditorMapper;
 
     int anim = 0;
+    int standAnim = 0;
 
     Map *map;
 

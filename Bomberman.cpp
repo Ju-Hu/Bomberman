@@ -29,12 +29,15 @@ Bomberman::Bomberman()
     refreshTimer = new QTimer(this);
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
     refreshTimer->start(1000 / FPS);
+    
     animationTimer = new QTimer(this);
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(animate()));
-    animationTimer->start(500);
+    animationTimer->start(200);
+    
     secTimer = new QTimer(this);
     connect(secTimer, SIGNAL(timeout()), this, SLOT(second()));
     secTimer->start(500);
+
     
  
   
@@ -402,6 +405,8 @@ void Bomberman::openVictory()
     // stop timer
     paused = true;
     Status = Paused;
+    if (playerWon == 1) { victoryMenu->title->setPlainText("Player 1\nWon!"); }
+    if (playerWon == 2) { victoryMenu->title->setPlainText("Player 2\nWon!"); }
 
     levelScene->addItem(victoryMenu);
     levelScene->addWidget(victoryMenu->getBackMenuBtn2());
@@ -416,6 +421,7 @@ void Bomberman::closeVictory()
     QApplication::setOverrideCursor(Qt::BlankCursor);
 
     // remove pause component from scene
+    playerWon = 0;
     levelScene->removeItem(victoryMenu);
     levelScene->removeItem(victoryMenu->getBackMenuBtn2()->graphicsProxyWidget());
     // reset proxy
@@ -453,8 +459,8 @@ void Bomberman::clickedEdit(int btnIndex)
                     if (editorScene->editField[c][r]->st == 3) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup1.png);"); }
                     if (editorScene->editField[c][r]->st == 4) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup2.png);"); }
                     if (editorScene->editField[c][r]->st == 5) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup3.png);"); }
-                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/3.png);"); }
-                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/2.png);"); }
+                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/player1/stop1.png);"); }
+                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/player2/stop1.png);"); }
                 }
                 if (editStatus == 8)
                 {
@@ -503,16 +509,29 @@ void Bomberman::saveEdit3()
 
 void Bomberman::animate()
 {
-    if (anim == 0)
+    if (standAnim == 0)
     {
-        menuScene->setMenuSprite("images/player/2.png");
+        menuScene->setMenuSprite("images/player/player1/stop1.png");
         anim = 1;
+        standAnim++;
     }
-    else if (anim == 1)
+    else if (standAnim == 1)
     {
-        menuScene->setMenuSprite("images/player/1.png");
         anim = 0;
-
+        standAnim++;
+    }
+    else if (standAnim == 2)
+    {
+        srand(time(NULL));
+        if (rand() % 13 == 1) { menuScene->setMenuSprite("images/player/player1/stop4.png"); }
+        else { menuScene->setMenuSprite("images/player/player1/stop2.png"); }
+        anim = 1;
+        standAnim++;
+    }
+    else if (standAnim == 3)
+    {
+        anim = 0;
+        standAnim = 0;
     }
     if (Status == InGame) {
         switch (StatusPlayer1)
@@ -546,11 +565,17 @@ void Bomberman::animate()
                 map->player1->setPixmap(map->Player1Pix1lf2);
                 }break;
             default:       
-                if (anim == 0){
+                if (standAnim == 0){
                 map->player1->setPixmap(map->Player1Pix1st1);
                 }
-                else if (anim == 1){
+                else if (standAnim == 1){
                 map->player1->setPixmap(map->Player1Pix1st2);
+                }
+                else if (standAnim == 2) {
+                map->player1->setPixmap(map->Player1Pix1st3);
+                }
+                else if (standAnim == 3) {
+                map->player1->setPixmap(map->Player1Pix1st4);
                 }break;
         }
 
@@ -585,11 +610,17 @@ void Bomberman::animate()
                 map->player2->setPixmap(map->Player2Pix1lf2);
             }break;
         default:
-            if (anim == 0) {
+            if (standAnim == 0) {
                 map->player2->setPixmap(map->Player2Pix1st1);
             }
-            else if (anim == 1) {
+            else if (standAnim == 1) {
                 map->player2->setPixmap(map->Player2Pix1st2);
+            }
+            else if (standAnim == 2) {
+                map->player2->setPixmap(map->Player2Pix1st3);
+            }
+            else if (standAnim == 3) {
+                map->player2->setPixmap(map->Player2Pix1st4);
             }break;
         }
 
@@ -924,16 +955,14 @@ void Bomberman::refresh()
             {
                 if (!collidingP1.isEmpty()) {
                     if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 9){ //Flamme
-                        qDebug() << "Flamme";
                         if (scene() == levelScene) {
                             if (pauseMenu->scene() != levelScene) {
                                 if (victoryMenu->scene() != levelScene) {
+                                    playerWon = 1;
                                     openVictory();
                                 }
                             }
                         }
-                        // Tot oder Leben Abziehen
-                        // Flammen aufrufen
                     }
                     if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
                         
@@ -959,16 +988,14 @@ void Bomberman::refresh()
             {
                 if (!collidingP2.isEmpty()) {
                     if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 9) { //Flamme
-                        qDebug() << "Flamme";
                         if (scene() == levelScene) {
                             if (pauseMenu->scene() != levelScene) {
                                 if (victoryMenu->scene() != levelScene) {
+                                    playerWon = 2;
                                     openVictory();
                                 }
                             }
                         }
-                        // Tot oder Leben Abziehen
-                        // Flammen aufrufen
                     }
                     if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
 

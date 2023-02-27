@@ -14,7 +14,7 @@ Victory::Victory()
     this->addToGroup(rect);
 
     // menu title
-    title = new QGraphicsTextItem("Player 1\nWon!");
+    title = new QGraphicsTextItem();
     QFont font = QFont("Agency FB", 60);
     font.setBold(true);
     title->setFont(font);

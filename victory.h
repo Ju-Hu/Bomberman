@@ -16,11 +16,15 @@ public:
 
     MenuButton* getBackMenuBtn2() const;
 
+    //int playerWon = 0;
+
+    QGraphicsTextItem* title;
+
 private:
 
     MenuButton* backMenuBtn2;
 
-    QGraphicsTextItem* title;
+    
 };
 
 #endif
