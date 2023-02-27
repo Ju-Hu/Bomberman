@@ -150,16 +150,6 @@ void Bomberman::keyPressEvent(QKeyEvent* event)
             showFullScreen();
     }
 
-    if (event->key() == Qt::Key_O) {
-        if (scene() == levelScene) {
-            if (pauseMenu->scene() != levelScene) {
-                if (victoryMenu->scene() != levelScene) {
-                    openVictory();
-                }
-
-            }
-        }
-    }
 }
 
 void Bomberman::keyReleaseEvent(QKeyEvent* event)
@@ -379,6 +369,8 @@ void Bomberman::openVictory()
     // stop timer
     paused = true;
     Status = Paused;
+    if (playerWon == 1) { victoryMenu->title->setPlainText("Player 1\nWon!"); }
+    if (playerWon == 2) { victoryMenu->title->setPlainText("Player 2\nWon!"); }
 
     levelScene->addItem(victoryMenu);
     levelScene->addWidget(victoryMenu->getBackMenuBtn2());
@@ -393,6 +385,7 @@ void Bomberman::closeVictory()
     QApplication::setOverrideCursor(Qt::BlankCursor);
 
     // remove pause component from scene
+    playerWon = 0;
     levelScene->removeItem(victoryMenu);
     levelScene->removeItem(victoryMenu->getBackMenuBtn2()->graphicsProxyWidget());
     // reset proxy
@@ -494,7 +487,7 @@ void Bomberman::animate()
     else if (standAnim == 2)
     {
         srand(time(NULL));
-        if (rand() % 15 == 1) { menuScene->setMenuSprite("images/player/player1/stop4.png"); }
+        if (rand() % 13 == 1) { menuScene->setMenuSprite("images/player/player1/stop4.png"); }
         else { menuScene->setMenuSprite("images/player/player1/stop2.png"); }
         anim = 1;
         standAnim++;
@@ -848,9 +841,8 @@ void Bomberman::refresh()
             {
                 if (!collidingP1.isEmpty()) {
                     if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 9){ //Flamme
-                        qDebug() << "Flamme";
-                        // Tot oder Leben Abziehen
-                        // Flammen aufrufen
+                        playerWon = 1;
+                        openVictory();
                     }
                     if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
                         
@@ -876,9 +868,8 @@ void Bomberman::refresh()
             {
                 if (!collidingP2.isEmpty()) {
                     if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 9) { //Flamme
-                        qDebug() << "Flamme";
-                        // Tot oder Leben Abziehen
-                        // Flammen aufrufen
+                        playerWon = 2;
+                        openVictory();
                     }
                     if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
 

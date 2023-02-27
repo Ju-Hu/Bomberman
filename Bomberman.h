@@ -66,6 +66,8 @@ public:
 
     int editStatus = 0;
 
+    int playerWon = 0;
+
     void resizeEvent(QResizeEvent* event);
 
     void openCredits();
