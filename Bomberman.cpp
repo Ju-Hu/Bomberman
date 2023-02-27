@@ -958,7 +958,7 @@ void Bomberman::refresh()
                         if (scene() == levelScene) {
                             if (pauseMenu->scene() != levelScene) {
                                 if (victoryMenu->scene() != levelScene) {
-                                    playerWon = 1;
+                                    playerWon = 2;
                                     openVictory();
                                 }
                             }
@@ -991,7 +991,7 @@ void Bomberman::refresh()
                         if (scene() == levelScene) {
                             if (pauseMenu->scene() != levelScene) {
                                 if (victoryMenu->scene() != levelScene) {
-                                    playerWon = 2;
+                                    playerWon = 1;
                                     openVictory();
                                 }
                             }
