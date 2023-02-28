@@ -52,6 +52,8 @@ public:
     void keyPressEvent(QKeyEvent*);
     void keyReleaseEvent(QKeyEvent*);
 
+    int player1Speed = PLAYER_SPEED;
+    int player2Speed = PLAYER_SPEED;
 
     bool leftKey1 = false;
     bool rightKey1 = false;
@@ -63,10 +65,39 @@ public:
     bool downKey2 = false;
     bool bombKey1old = false;
     bool bombKey2old = false;
-    bool bombChain1 = false;
-    bool bombChain2 = false;
 
-    
+    bool bombMerker1 = false;
+    bool bombMerker2 = false;
+    bool cBombMerker1 = false;
+    bool cBombMerker2 = false;
+
+    bool xM1 = false;
+    bool xM2 = false;
+    bool xP1 = false;
+    bool xP2 = false;
+    bool yM1 = false;
+    bool yM2 = false;
+    bool yP1 = false;
+    bool yP2 = false;
+
+    int b1cnt =0;
+    int b2cnt =0;
+    int f1cnt = 0;
+    int f2cnt = 0;
+    int s1cnt = 0;
+    int s2cnt = 0;
+
+    int bombCnt1 = 0;
+    int bombCnt2 = 0;
+
+    bool bombItem1 = false;
+    bool bombItem2 = false;
+
+    bool flameItem1 = false;
+    bool flameItem2 = false;
+
+    bool speedItem1 = false;
+    bool speedItem2 = false;
 
     int StatusPlayer1 =0;
     int StatusPlayer2 = 0;
