@@ -3,19 +3,27 @@ using namespace std;
 
 Editor::Editor() : QGraphicsScene()
 {
-
+    this->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     QImage background = QImage("images/backgrounds/background_menu2.png");
+    background = background.scaled(WINDOW_WIDTH, WINDOW_HEIGHT);
     this->setBackgroundBrush(background);
 
-    int xButton = 10;
-    int xButton2 = 100;
-    int yStartButton = 10;
+    
+    /*int xField = 323;
+    int yField = 53;*/
+
+    
+    int xButton2 = X_FIELD - BTN_GAP - 75;
+    int xButton = xButton2 - BTN_GAP - 75;
+    int yStartButton = Y_FIELD;
+    
     int index1 = 0;
     int index2 = 0;
 
     // LoadLVL1 Btn
     LoadLvl1Btn = new EditorButton(0, 0, "Load 1");
     LoadLvl1Btn->resize(75, 75);
+    LoadLvl1Btn->setStyleSheet("border-image:url(images/editorneutral.png);");
     LoadLvl1Btn->move(xButton, yStartButton + index1 * (LoadLvl1Btn->height() + BTN_GAP));
     LoadLvl1Btn->setText(LoadLvl1Btn->text);
     QFont font;
@@ -28,6 +36,7 @@ Editor::Editor() : QGraphicsScene()
     // LoadLVL2 Btn
     LoadLvl2Btn = new EditorButton(0, 0, "Load 2");
     LoadLvl2Btn->resize(75, 75);
+    LoadLvl2Btn->setStyleSheet("border-image:url(images/editorneutral.png);");
     LoadLvl2Btn->move(xButton, yStartButton + index1 * (LoadLvl2Btn->height() + BTN_GAP));
     LoadLvl2Btn->setText(LoadLvl2Btn->text);
     this->addWidget(LoadLvl2Btn);
@@ -36,6 +45,7 @@ Editor::Editor() : QGraphicsScene()
     // LoadLVL3 Btn
     LoadLvl3Btn = new EditorButton(0, 0, "Load 3");
     LoadLvl3Btn->resize(75, 75);
+    LoadLvl3Btn->setStyleSheet("border-image:url(images/editorneutral.png);");
     LoadLvl3Btn->move(xButton, yStartButton + index1 * (LoadLvl3Btn->height() + BTN_GAP));
     LoadLvl3Btn->setText(LoadLvl3Btn->text);
     this->addWidget(LoadLvl3Btn);
@@ -44,6 +54,7 @@ Editor::Editor() : QGraphicsScene()
     // LoadLVL4 Btn
     LoadLvl4Btn = new EditorButton(0, 0, "Clear");
     LoadLvl4Btn->resize(75, 75);
+    LoadLvl4Btn->setStyleSheet("border-image:url(images/editorneutral.png);");
     LoadLvl4Btn->move(xButton, yStartButton + index1 * (LoadLvl4Btn->height() + BTN_GAP));
     LoadLvl4Btn->setText(LoadLvl4Btn->text);
     this->addWidget(LoadLvl4Btn);
@@ -51,6 +62,7 @@ Editor::Editor() : QGraphicsScene()
     // LVL1 Btn
     Lvl1Btn = new EditorButton(0, 0, "Save 1");
     Lvl1Btn->resize(75, 75);
+    Lvl1Btn->setStyleSheet("border-image:url(images/editorsave.png);");
     Lvl1Btn->move(xButton2, yStartButton + index2 * (Lvl1Btn->height() + BTN_GAP));
     Lvl1Btn->setText(Lvl1Btn->text);
     this->addWidget(Lvl1Btn);
@@ -59,6 +71,7 @@ Editor::Editor() : QGraphicsScene()
     // LVL2 Btn
     Lvl2Btn = new EditorButton(0, 0, "Save 2");
     Lvl2Btn->resize(75, 75);
+    Lvl2Btn->setStyleSheet("border-image:url(images/editorsave.png);");
     Lvl2Btn->move(xButton2, yStartButton + index2 * (Lvl2Btn->height() + BTN_GAP));
     Lvl2Btn->setText(Lvl2Btn->text);
     this->addWidget(Lvl2Btn);
@@ -67,6 +80,7 @@ Editor::Editor() : QGraphicsScene()
     // LVL3 Btn
     Lvl3Btn = new EditorButton(0, 0, "Save 3");
     Lvl3Btn->resize(75, 75);
+    Lvl3Btn->setStyleSheet("border-image:url(images/editorsave.png);");
     Lvl3Btn->move(xButton2, yStartButton + index2 * (Lvl3Btn->height() + BTN_GAP));
     Lvl3Btn->setText(Lvl3Btn->text);
     this->addWidget(Lvl3Btn);
@@ -75,6 +89,7 @@ Editor::Editor() : QGraphicsScene()
     // display menuBtn
     MenuBtn = new EditorButton(0, 0, "Menu");
     MenuBtn->resize(75, 75);
+    MenuBtn->setStyleSheet("border-image:url(images/editorexit.png);");
     MenuBtn->move(xButton2, yStartButton + index2 * (MenuBtn->height() + BTN_GAP));
     MenuBtn->setText(MenuBtn->text);
     this->addWidget(MenuBtn);
@@ -102,7 +117,7 @@ Editor::Editor() : QGraphicsScene()
                 if (modified_input[c] - '0' == 0) {
                     editField[c][r] = new EditorButton(btnindex, modified_input[c] - '0', "0");
                     editField[c][r]->resize(75, 75);
-                    editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
+                    editField[c][r]->move((c * BLOCK_SIZE) + X_FIELD, r * BLOCK_SIZE + Y_FIELD);
                     //editField[c][r]->setText(editField[c][r]->text);
                     editField[c][r]->setStyleSheet("border-image:url(images/block0.png);");
                     this->addWidget(editField[c][r]);
@@ -110,7 +125,7 @@ Editor::Editor() : QGraphicsScene()
                 if (modified_input[c] - '0' == 1) {
                     editField[c][r] = new EditorButton(btnindex, modified_input[c] - '0', "1");
                     editField[c][r]->resize(75, 75);
-                    editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
+                    editField[c][r]->move((c * BLOCK_SIZE) + X_FIELD, r * BLOCK_SIZE + Y_FIELD);
                     //editField[c][r]->setText(editField[c][r]->text);
                     editField[c][r]->setStyleSheet("border-image:url(images/block3.png);");
                     this->addWidget(editField[c][r]);
@@ -118,7 +133,7 @@ Editor::Editor() : QGraphicsScene()
                 if (modified_input[c] - '0' == 2) {
                     editField[c][r] = new EditorButton(btnindex, modified_input[c] - '0', "2");
                     editField[c][r]->resize(75, 75);
-                    editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
+                    editField[c][r]->move((c * BLOCK_SIZE) + X_FIELD, r * BLOCK_SIZE + Y_FIELD);
                     //editField[c][r]->setText(editField[c][r]->text);
                     editField[c][r]->setStyleSheet("border-image:url(images/block4.png);");
                     this->addWidget(editField[c][r]);
@@ -126,7 +141,7 @@ Editor::Editor() : QGraphicsScene()
                 if (modified_input[c] - '0' == 3) {
                     editField[c][r] = new EditorButton(btnindex, modified_input[c] - '0', "3");
                     editField[c][r]->resize(75, 75);
-                    editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
+                    editField[c][r]->move((c * BLOCK_SIZE) + X_FIELD, r * BLOCK_SIZE + Y_FIELD);
                     //editField[c][r]->setText(editField[c][r]->text);
                     editField[c][r]->setStyleSheet("border-image:url(images/powerup1.png);");
                     this->addWidget(editField[c][r]);
@@ -134,7 +149,7 @@ Editor::Editor() : QGraphicsScene()
                 if (modified_input[c] - '0' == 4) {
                     editField[c][r] = new EditorButton(btnindex, modified_input[c] - '0', "4");
                     editField[c][r]->resize(75, 75);
-                    editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
+                    editField[c][r]->move((c * BLOCK_SIZE) + X_FIELD, r * BLOCK_SIZE + Y_FIELD);
                     //editField[c][r]->setText(editField[c][r]->text);
                     editField[c][r]->setStyleSheet("border-image:url(images/powerup2.png);");
                     this->addWidget(editField[c][r]);
@@ -142,7 +157,7 @@ Editor::Editor() : QGraphicsScene()
                 if (modified_input[c] - '0' == 5) {
                     editField[c][r] = new EditorButton(btnindex, modified_input[c] - '0', "5");
                     editField[c][r]->resize(75, 75);
-                    editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
+                    editField[c][r]->move((c * BLOCK_SIZE) + X_FIELD, r * BLOCK_SIZE + Y_FIELD);
                     //editField[c][r]->setText(editField[c][r]->text);
                     editField[c][r]->setStyleSheet("border-image:url(images/powerup3.png);");
                     this->addWidget(editField[c][r]);
@@ -150,17 +165,17 @@ Editor::Editor() : QGraphicsScene()
                 if (modified_input[c] - '0' == 6) {
                     editField[c][r] = new EditorButton(btnindex, modified_input[c] - '0', "6");
                     editField[c][r]->resize(75, 75);
-                    editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
+                    editField[c][r]->move((c * BLOCK_SIZE) + X_FIELD, r * BLOCK_SIZE + Y_FIELD);
                     //editField[c][r]->setText(editField[c][r]->text);
-                    editField[c][r]->setStyleSheet("border-image:url(images/player/player1/stop1.png);");
+                    editField[c][r]->setStyleSheet("border-image:url(images/player1.png);");
                     this->addWidget(editField[c][r]);
                 }
                 if (modified_input[c] - '0' == 7) {
                     editField[c][r] = new EditorButton(btnindex, modified_input[c] - '0', "7");
                     editField[c][r]->resize(75, 75);
-                    editField[c][r]->move((c * BLOCK_SIZE) + 190, r * BLOCK_SIZE);
+                    editField[c][r]->move((c * BLOCK_SIZE) + X_FIELD, r * BLOCK_SIZE + Y_FIELD);
                     //editField[c][r]->setText(editField[c][r]->text);
-                    editField[c][r]->setStyleSheet("border-image:url(images/player/player2/stop1.png);");
+                    editField[c][r]->setStyleSheet("border-image:url(images/player2.png);");
                     this->addWidget(editField[c][r]);
                 }
                 btnindex++;
@@ -278,13 +293,13 @@ void Editor::loadEditor(int loadTXT)
                     editField[c][r]->st = 6;
                     editField[c][r]->text = QString::number(6);
                     //editField[c][r]->setText(editField[c][r]->text);
-                    editField[c][r]->setStyleSheet("border-image:url(images/player/player1/stop1.png);");
+                    editField[c][r]->setStyleSheet("border-image:url(images/player1.png);");
                 }
                 if (modified_inputString[c] - '0' == 7) {
                     editField[c][r]->st = 7;
                     editField[c][r]->text = QString::number(7);
                     //editField[c][r]->setText(editField[c][r]->text);
-                    editField[c][r]->setStyleSheet("border-image:url(images/player/player2/stop1.png);");
+                    editField[c][r]->setStyleSheet("border-image:url(images/player2.png);");
                 }
                 btnindex++;
             }

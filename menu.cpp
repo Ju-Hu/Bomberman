@@ -6,9 +6,9 @@ Menu::Menu() : QGraphicsScene()
     int xButton = 200;
     int yStartButton = 100;
     // Create window scene with background
-    //this->setSceneRect(0, 0, MAP_WIDTH, MAP_HEIGHT);
+    this->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     QImage background = QImage("images/backgrounds/background_menu.png");
-    //background = background.scaled(WINDOW_HEIGHT, WINDOW_WIDTH);
+    background = background.scaled(WINDOW_WIDTH, WINDOW_HEIGHT);
     this->setBackgroundBrush(background);
 
     //// Display levels buttons
@@ -43,30 +43,35 @@ Menu::Menu() : QGraphicsScene()
     // LVL1 Btn
     Lvl1Btn = new MenuButton("Level 1");
     Lvl1Btn->move(xButton, yStartButton + index * (Lvl1Btn->height() + BTN_GAP));
+    Lvl1Btn->setStyleSheet("border-image:url(images/menubutton.png);");
     this->addWidget(Lvl1Btn);
     index++;
 
     // LVL2 Btn
     Lvl2Btn = new MenuButton("Level 2");
     Lvl2Btn->move(xButton, yStartButton + index * (Lvl2Btn->height() + BTN_GAP));
+    Lvl2Btn->setStyleSheet("border-image:url(images/menubutton.png);");
     this->addWidget(Lvl2Btn);
     index++;
 
     // LVL3 Btn
     Lvl3Btn = new MenuButton("Level 3");
     Lvl3Btn->move(xButton, yStartButton + index * (Lvl3Btn->height() + BTN_GAP));
+    Lvl3Btn->setStyleSheet("border-image:url(images/menubutton.png);");
     this->addWidget(Lvl3Btn);
     index++;
 
     // Editor Btn
     EditBtn = new MenuButton("Editor");
     EditBtn->move(xButton, yStartButton + index * (EditBtn->height() + BTN_GAP));
+    EditBtn->setStyleSheet("border-image:url(images/menubutton.png);");
     this->addWidget(EditBtn);
     index++;
 
     // display quitBtn
     QuitBtn = new MenuButton("Quit");
     QuitBtn->move(xButton, yStartButton + index * (QuitBtn->height() + BTN_GAP));
+    QuitBtn->setStyleSheet("border-image:url(images/quitbutton.png);");
     this->addWidget(QuitBtn);
 
     // Player Image
