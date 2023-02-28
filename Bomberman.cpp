@@ -821,60 +821,236 @@ void Bomberman::Flame(int x, int y) {
     if (y + 2 < COLUMN) { yP2 = true; }
     else { yP2 = false; }
 
-
+    srand(time(NULL));
 
     if (map->Field[x][y]->st != 9) {
         map->Field[x][y]->st = 9;
         map->Field[x][y]->setPixmap(Map().FlamePix1);
+
     }
     if (xP1 == true) {
         if (map->Field[x + 1][y]->st != 1 && map->Field[x + 1][y]->st != 9 ) {
-            map->Field[x + 1][y]->st = 9;
-            map->Field[x + 1][y]->setPixmap(Map().FlamePix1);
+           
+            if (map->Field[x + 1][y]->st == 2) {
+                if (rand() % 10 == 0) {
+                    map->Field[x + 1][y]->st = 3;
+                    map->Field[x + 1][y]->setPixmap(Map().Item1Pix1);
+
+                }
+                else if (rand() % 10 == 1) {
+                    map->Field[x + 1][y]->st = 4;
+                    map->Field[x + 1][y]->setPixmap(Map().Item2Pix1);
+
+                }
+                else if (rand() % 10 == 2) {
+                    map->Field[x + 1][y]->st = 5;
+                    map->Field[x + 1][y]->setPixmap(Map().Item3Pix1);
+                }
+                else {
+                    map->Field[x + 1][y]->st = 9;
+                    map->Field[x + 1][y]->setPixmap(Map().FlamePix1);
+                }
+            }else{
+                map->Field[x + 1][y]->st = 9;
+                map->Field[x + 1][y]->setPixmap(Map().FlamePix1);
+            }
         }
     }
     if (xM1 == true) {
         if (map->Field[x - 1][y]->st != 1 && map->Field[x - 1][y]->st != 9) {
-            map->Field[x - 1][y]->st = 9;
-            map->Field[x - 1][y]->setPixmap(Map().FlamePix1);
+            if (map->Field[x - 1][y]->st == 2) {
+                if (rand() % 10 == 0) {
+                    map->Field[x - 1][y]->st = 3;
+                    map->Field[x - 1][y]->setPixmap(Map().Item1Pix1);
+
+                }
+                else if (rand() % 10 == 1) {
+                    map->Field[x - 1][y]->st = 4;
+                    map->Field[x - 1][y]->setPixmap(Map().Item2Pix1);
+
+                }
+                else if (rand() % 10 == 2) {
+                    map->Field[x - 1][y]->st = 5;
+                    map->Field[x - 1][y]->setPixmap(Map().Item3Pix1);
+                }
+                else {
+                    map->Field[x - 1][y]->st = 9;
+                    map->Field[x - 1][y]->setPixmap(Map().FlamePix1);
+                }
+            }
+            else {
+                map->Field[x - 1][y]->st = 9;
+                map->Field[x - 1][y]->setPixmap(Map().FlamePix1);
+            }
         }
     }
     if (yP1 == true) {
         if (map->Field[x][y + 1]->st != 1 && map->Field[x][y + 1]->st != 9 ) {
-            map->Field[x][y + 1]->st = 9;
-            map->Field[x][y + 1]->setPixmap(Map().FlamePix1);
+            if (map->Field[x][y +1]->st == 2) {
+                if (rand() % 10 == 0) {
+                    map->Field[x][y + 1]->st = 3;
+                    map->Field[x][y + 1]->setPixmap(Map().Item1Pix1);
+
+                }
+                else if (rand() % 10 == 1) {
+                    map->Field[x][y + 1]->st = 4;
+                    map->Field[x][y + 1]->setPixmap(Map().Item2Pix1);
+
+                }
+                else if (rand() % 10 == 2) {
+                    map->Field[x][y + 1]->st = 5;
+                    map->Field[x][y + 1]->setPixmap(Map().Item3Pix1);
+                }
+                else {
+                    map->Field[x][y + 1]->st = 9;
+                    map->Field[x][y + 1]->setPixmap(Map().FlamePix1);
+                }
+            }
+            else {
+                map->Field[x][y + 1]->st = 9;
+                map->Field[x][y + 1]->setPixmap(Map().FlamePix1);
+            }
         }
     }
     if (yM1 == true) {
         if (map->Field[x][y - 1]->st != 1 && map->Field[x][y - 1]->st != 9 ) {
-            map->Field[x][y - 1]->st = 9;
-            map->Field[x][y - 1]->setPixmap(Map().FlamePix1);
+            if (map->Field[x][y - 1]->st == 2) {
+                if (rand() % 10 == 0) {
+                    map->Field[x][y - 1]->st = 3;
+                    map->Field[x][y - 1]->setPixmap(Map().Item1Pix1);
+
+                }
+                else if (rand() % 10 == 1) {
+                    map->Field[x][y - 1]->st = 4;
+                    map->Field[x][y - 1]->setPixmap(Map().Item2Pix1);
+
+                }
+                else if (rand() % 10 == 2) {
+                    map->Field[x][y - 1]->st = 5;
+                    map->Field[x][y - 1]->setPixmap(Map().Item3Pix1);
+                }
+                else {
+                    map->Field[x][y - 1]->st = 9;
+                    map->Field[x][y - 1]->setPixmap(Map().FlamePix1);
+                }
+            }
+            else {
+                map->Field[x][y - 1]->st = 9;
+                map->Field[x][y - 1]->setPixmap(Map().FlamePix1);
+            }
         }
     }
     if (map->Field[x][y]->flame ==true) {
         if (xP2 == true) {
-            if (map->Field[x + 2][y]->st != 1 && map->Field[x + 2][y]->st < 9 && map->Field[x + 2][y]->st != 1 ) {
-                map->Field[x + 2][y]->st = 9;
-                map->Field[x + 2][y]->setPixmap(Map().FlamePix1);
+            if (map->Field[x + 2][y]->st != 1 && map->Field[x + 2][y]->st < 9 && map->Field[x + 1][y]->st != 1) {
+                if (map->Field[x + 2][y]->st == 2) {
+                    if (rand() % 10 == 0) {
+                        map->Field[x + 2][y]->st = 3;
+                        map->Field[x + 2][y]->setPixmap(Map().Item1Pix1);
+
+                    }
+                    else if (rand() % 10 == 1) {
+                        map->Field[x + 2][y]->st = 4;
+                        map->Field[x + 2][y]->setPixmap(Map().Item2Pix1);
+
+                    }
+                    else if (rand() % 10 == 2) {
+                        map->Field[x + 2][y]->st = 5;
+                        map->Field[x + 2][y]->setPixmap(Map().Item3Pix1);
+                    }
+                    else {
+                        map->Field[x + 2][y]->st = 9;
+                        map->Field[x + 2][y]->setPixmap(Map().FlamePix1);
+                    }
+                }
+                else {
+                    map->Field[x + 2][y]->st = 9;
+                    map->Field[x + 2][y]->setPixmap(Map().FlamePix1);
+                }
             }
         }
         if (xM2 == true) {
-            if (map->Field[x - 2][y]->st != 1 && map->Field[x - 2][y]->st < 9 && map->Field[x - 2][y]->st != 1 ) {
-                map->Field[x - 2][y]->st = 9;
-                map->Field[x - 2][y]->setPixmap(Map().FlamePix1);
+            if (map->Field[x - 2][y]->st != 1 && map->Field[x - 2][y]->st < 9 && map->Field[x - 1][y]->st != 1 ) {
+                if (map->Field[x -2][y]->st == 2) {
+                    if (rand() % 10 == 0) {
+                        map->Field[x -2][y]->st = 3;
+                        map->Field[x -2][y]->setPixmap(Map().Item1Pix1);
+
+                    }
+                    else if (rand() % 10 == 1) {
+                        map->Field[x -2][y]->st = 4;
+                        map->Field[x -2][y]->setPixmap(Map().Item2Pix1);
+
+                    }
+                    else if (rand() % 10 == 2) {
+                        map->Field[x -2][y]->st = 5;
+                        map->Field[x -2][y]->setPixmap(Map().Item3Pix1);
+                    }
+                    else {
+                        map->Field[x -2][y]->st = 9;
+                        map->Field[x -2][y]->setPixmap(Map().FlamePix1);
+                    }
+                }
+                else {
+                    map->Field[x -2][y]->st = 9;
+                    map->Field[x -2][y]->setPixmap(Map().FlamePix1);
+                }
             }
         }
         if (yP2 == true) {
-            if (map->Field[x][y + 2]->st != 1 && map->Field[x][y + 2]->st < 9 && map->Field[x][y + 2]->st != 1 ) {
-                map->Field[x][y + 2]->st = 9;
-                map->Field[x][y + 2]->setPixmap(Map().FlamePix1);
+            if (map->Field[x][y + 2]->st != 1 && map->Field[x][y + 2]->st < 9 && map->Field[x][y + 1]->st != 1 ) {
+                if (map->Field[x][y + 2]->st == 2) {
+                    if (rand() % 10 == 0) {
+                        map->Field[x][y + 2]->st = 3;
+                        map->Field[x][y + 2]->setPixmap(Map().Item1Pix1);
+
+                    }
+                    else if (rand() % 10 == 1) {
+                        map->Field[x][y + 2]->st = 4;
+                        map->Field[x][y + 2]->setPixmap(Map().Item2Pix1);
+
+                    }
+                    else if (rand() % 10 == 2) {
+                        map->Field[x][y + 2]->st = 5;
+                        map->Field[x][y + 2]->setPixmap(Map().Item3Pix1);
+                    }
+                    else {
+                        map->Field[x][y + 2]->st = 9;
+                        map->Field[x][y + 2]->setPixmap(Map().FlamePix1);
+                    }
+                }
+                else {
+                    map->Field[x][y + 2]->st = 9;
+                    map->Field[x][y + 2]->setPixmap(Map().FlamePix1);
+                }
             }
         }
         if (yM2 == true) {
-            if (map->Field[x][y - 2]->st != 1 && map->Field[x][y - 2]->st < 9 && map->Field[x][y - 2]->st != 1 ) {
-                map->Field[x][y - 2]->st = 9;
-                map->Field[x][y - 2]->setPixmap(Map().FlamePix1);
+            if (map->Field[x][y - 2]->st != 1 && map->Field[x][y - 2]->st < 9 && map->Field[x][y - 1]->st != 1 ) {
+                if (map->Field[x][y - 2]->st == 2) {
+                    if (rand() % 10 == 0) {
+                        map->Field[x][y - 2]->st = 3;
+                        map->Field[x][y - 2]->setPixmap(Map().Item1Pix1);
 
+                    }
+                    else if (rand() % 10 == 1) {
+                        map->Field[x][y - 2]->st = 4;
+                        map->Field[x][y - 2]->setPixmap(Map().Item2Pix1);
+
+                    }
+                    else if (rand() % 10 == 2) {
+                        map->Field[x][y - 2]->st = 5;
+                        map->Field[x][y - 2]->setPixmap(Map().Item3Pix1);
+                    }
+                    else {
+                        map->Field[x][y - 2]->st = 9;
+                        map->Field[x][y - 2]->setPixmap(Map().FlamePix1);
+                    }
+                }
+                else {
+                    map->Field[x][y - 2]->st = 9;
+                    map->Field[x][y - 2]->setPixmap(Map().FlamePix1);
+                }
             }
         }
     }  
@@ -888,7 +1064,7 @@ void Bomberman::FlameRemove(int x, int y) {
     else { xM2 = false; }
     if (x + 1 < COLUMN) { xP1 = true; }
     else { xP1 = false; }
-    if (x + 2 < COLUMN) { xP2 = true; }
+    if (x + 2 < COLUMN && map->Field[x+2][y]) { xP2 = true; }
     else { xP2 = false; }
 
     if (y - 1 >= 0) { yM1 = true; }
@@ -928,7 +1104,7 @@ void Bomberman::FlameRemove(int x, int y) {
         }
     }
     if (map->Field[x][y]->flame == true) {
-        if (xP2 = true) {
+        if (xP2 == true) {
             if (map->Field[x + 2][y]->st == 9) {
                 map->Field[x + 2][y]->st = 0;
                 map->Field[x + 2][y]->setPixmap(Map().BlockNullPix);
