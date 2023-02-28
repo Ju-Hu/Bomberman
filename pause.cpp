@@ -3,14 +3,16 @@
 Pause::Pause()
 {
     continueBtn = new MenuButton("Continue");
+    continueBtn->setStyleSheet("border-image:url(images/continuebutton.png);");
     backMenuBtn = new MenuButton("Menu");
+    backMenuBtn->setStyleSheet("border-image:url(images/quitbutton.png);");
 
     int yOffset = 120;
     int borderOffset = 50;
 
     // rectangle
     QGraphicsRectItem* rect = new QGraphicsRectItem(0, 0, continueBtn->width() + borderOffset, 400); //yOffset * 3 + borderOffset
-    rect->setBrush(Qt::white);
+    rect->setBrush(Qt::lightGray);
     rect->setPos((MAP_WIDTH / 2) - (continueBtn->width() / 2) - (borderOffset / 2), MAP_HEIGHT/2 - 200); //+ yOffset - borderOffset / 2
     this->addToGroup(rect);
 

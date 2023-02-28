@@ -9,7 +9,7 @@ Bomberman::Bomberman()
     // init szene
     levelScene = new QGraphicsScene();
     QImage backgroundMap = QImage("images/backgrounds/background_map.png");
-    //background = background.scaled(WINDOW_HEIGHT, WINDOW_WIDTH);
+    //backgroundMap = backgroundMap.scaled(WINDOW_HEIGHT/2, WINDOW_WIDTH/2);
     levelScene->setBackgroundBrush(backgroundMap);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -136,26 +136,42 @@ void Bomberman::keyPressEvent(QKeyEvent* event)
     }
     if (event->key() == Qt::Key_Space) {
         //Bomb placement Player2
-        if (scene() == levelScene && (bombKey2old == false || bombChain2 == true)) {
+        if (scene() == levelScene && bombKey2old == false ) {
             bombKey2old = true;
-            int x2 = map->player2->x();
-            int y2 = map->player2->y();
-            x2 = (int(x2 + BLOCK_SIZE / 2) / BLOCK_SIZE);
-            y2 = (int(y2 + BLOCK_SIZE / 2) / BLOCK_SIZE);
-            map->Field[x2][y2]->st = 8;
-            map->Field[x2][y2]->setPixmap(Map().BombPix1);
+            if (bombCnt2 < 1 ) {
+                int x2 = map->player2->x();
+                int y2 = map->player2->y();
+                x2 = (int(x2 + BLOCK_SIZE / 2) / BLOCK_SIZE);
+                y2 = (int(y2 + BLOCK_SIZE / 2) / BLOCK_SIZE);
+                map->Field[x2][y2]->st = 8;
+                map->Field[x2][y2]->setPixmap(Map().BombPix1);
+                bombMerker2 = true;
+                bombCnt2 += 6;
+                if (flameItem2 == true) {
+                    map->Field[x2][y2]->flame = true;
+                }
+
+            }
         }
     }
     if (event->key() == Qt::Key_Enter|| event->key() == Qt::Key_Return) {
         //Bomb placement Player1
-        if (scene() == levelScene && (bombKey1old == false || bombChain1 == true)) {
+        if (scene() == levelScene && bombKey1old == false) {
             bombKey1old = true;
-            int x1= map->player1->x();
-            int y1= map->player1->y();
-            x1 = (int(x1 + BLOCK_SIZE / 2) / BLOCK_SIZE);
-            y1 = (int(y1 + BLOCK_SIZE / 2) / BLOCK_SIZE);
-            map->Field[x1][y1]->st = 8;
-            map->Field[x1][y1]->setPixmap(Map().BombPix1);
+
+            if (bombCnt1 < 1 ) {
+                int x1 = map->player1->x();
+                int y1 = map->player1->y();
+                x1 = (int(x1 + BLOCK_SIZE / 2) / BLOCK_SIZE);
+                y1 = (int(y1 + BLOCK_SIZE / 2) / BLOCK_SIZE);
+                map->Field[x1][y1]->st = 8;
+                map->Field[x1][y1]->setPixmap(Map().BombPix1);
+                bombMerker1 = true;
+                bombCnt1 += 6;
+                if (flameItem1 == true) {
+                    map->Field[x1][y1]->flame = true;
+                }
+            }
         }
     }
 
@@ -234,6 +250,8 @@ void Bomberman::openMenu()
         closePause();
     if (victoryMenu->scene() == levelScene)
         closeVictory();
+    if (scene() == editorScene)
+        emit playSound("click");
 
     paused = true;
     Status = InMenu;
@@ -248,14 +266,12 @@ void Bomberman::openMenu()
     setScene(menuScene);
 
     //menu music
-    emit playSound("stopMusic");
     emit playSound("menu");
 }
 
 void Bomberman::clicked1()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map1");
     levelScene->clear();
     map->generateMap1();
@@ -267,14 +283,33 @@ void Bomberman::clicked1()
     levelScene->addItem(map->player1);
     levelScene->addItem(map->player2);
 
+    b1cnt = 0;
+    b2cnt = 0;
+    f1cnt = 0;
+    f2cnt = 0;
+    s1cnt = 0;
+    s2cnt = 0;
 
+    bombCnt1 = 0;
+    bombCnt2 = 0;
+
+    player1Speed = PLAYER_SPEED;
+    player2Speed = PLAYER_SPEED;
+
+    bombItem1 = false;
+    bombItem2 = false;
+
+    flameItem1 = false;
+    flameItem2 = false;
+
+    speedItem1 = false;
+    speedItem2 = false;
     openGame();
 }
 
 void Bomberman::clicked2()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map2");
     levelScene->clear();
     map->generateMap2();
@@ -285,6 +320,28 @@ void Bomberman::clicked2()
     }
     levelScene->addItem(map->player1);
     levelScene->addItem(map->player2);
+
+    b1cnt = 0;
+    b2cnt = 0;
+    f1cnt = 0;
+    f2cnt = 0;
+    s1cnt = 0;
+    s2cnt = 0;
+
+    player1Speed = PLAYER_SPEED;
+    player2Speed = PLAYER_SPEED;
+
+    bombCnt1 = 0;
+    bombCnt2 = 0;
+
+    bombItem1 = false;
+    bombItem2 = false;
+
+    flameItem1 = false;
+    flameItem2 = false;
+
+    speedItem1 = false;
+    speedItem2 = false;
     openGame();
 
 }
@@ -292,7 +349,6 @@ void Bomberman::clicked2()
 void Bomberman::clicked3()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map3");
     levelScene->clear();
     map->generateMap3();
@@ -303,6 +359,28 @@ void Bomberman::clicked3()
     }
     levelScene->addItem(map->player1);
     levelScene->addItem(map->player2);
+
+    b1cnt = 0;
+    b2cnt = 0;
+    f1cnt = 0;
+    f2cnt = 0;
+    s1cnt = 0;
+    s2cnt = 0;
+
+    player1Speed = PLAYER_SPEED;
+    player2Speed = PLAYER_SPEED;
+
+    bombCnt1 = 0;
+    bombCnt2 = 0;
+
+    bombItem1 = false;
+    bombItem2 = false;
+
+    flameItem1 = false;
+    flameItem2 = false;
+
+    speedItem1 = false;
+    speedItem2 = false;
     openGame();
 }
 
@@ -395,9 +473,8 @@ void Bomberman::closeCredits()
 
 void Bomberman::openVictory()
 {
-
-    emit playSound("click");
-    emit playSound("startPauseMusic");
+    emit playSound("win");
+    emit playSound("stopMusic");
 
     // Show mouse cursor
     QApplication::setOverrideCursor(Qt::ArrowCursor);
@@ -405,8 +482,8 @@ void Bomberman::openVictory()
     // stop timer
     paused = true;
     Status = Paused;
-    if (playerWon == 1) { victoryMenu->title->setPlainText("Player 1\nWon!"); }
-    if (playerWon == 2) { victoryMenu->title->setPlainText("Player 2\nWon!"); }
+    if (playerWon == 1) { victoryMenu->title->setPlainText("   Blue\n  Wins!"); }
+    if (playerWon == 2) { victoryMenu->title->setPlainText("  Green\n  Wins!"); }
 
     levelScene->addItem(victoryMenu);
     levelScene->addWidget(victoryMenu->getBackMenuBtn2());
@@ -415,7 +492,6 @@ void Bomberman::openVictory()
 void Bomberman::closeVictory()
 {
     emit playSound("click");
-    emit playSound("stopPauseMusic");
 
     // hide mouse cursor
     QApplication::setOverrideCursor(Qt::BlankCursor);
@@ -431,6 +507,7 @@ void Bomberman::closeVictory()
 // Editor--------------------------------------------------------------------------------------
 void Bomberman::openEditor()
 {
+    emit playSound("click");
     // Show mouse cursor
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 
@@ -441,8 +518,7 @@ void Bomberman::openEditor()
 
 void Bomberman::clickedEdit(int btnIndex)
 {
-    //changeEdit(1, 0);
-    qDebug() << btnIndex;
+    emit playSound("click");
     for (int r = 0; r < ROW;) {
         for (int c = 0; c < COLUMN; c++) {
             if (editorScene->editField[c][r]->btnID == btnIndex)
@@ -459,8 +535,8 @@ void Bomberman::clickedEdit(int btnIndex)
                     if (editorScene->editField[c][r]->st == 3) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup1.png);"); }
                     if (editorScene->editField[c][r]->st == 4) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup2.png);"); }
                     if (editorScene->editField[c][r]->st == 5) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup3.png);"); }
-                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/player1/stop1.png);"); }
-                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/player2/stop1.png);"); }
+                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player1.png);"); }
+                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player2.png);"); }
                 }
                 if (editStatus == 8)
                 {
@@ -477,30 +553,37 @@ void Bomberman::clickedEdit(int btnIndex)
 }
 void Bomberman::loadEdit1()
 {
+    emit playSound("click");
     editorScene->loadEditor(1);
 }
 void Bomberman::loadEdit2()
 {
+    emit playSound("click");
     editorScene->loadEditor(2);
 }
 void Bomberman::loadEdit3()
 {
+    emit playSound("click");
     editorScene->loadEditor(3);
 }
 void Bomberman::loadEdit4()
 {
+    emit playSound("click");
     editorScene->loadEditor(4);
 }
 void Bomberman::saveEdit1()
 {
+    emit playSound("click");
     editorScene->saveEditor(1);
 }
 void Bomberman::saveEdit2()
 {
+    emit playSound("click");
     editorScene->saveEditor(2);
 }
 void Bomberman::saveEdit3()
 {
+    emit playSound("click");
     editorScene->saveEditor(3);
 }
 
@@ -629,7 +712,71 @@ void Bomberman::animate()
 
 void Bomberman::second() 
 {
+
+
     if (Status == InGame) {
+       
+        if (speedItem1 == true) { 
+            player1Speed = PLAYER_SPEED + BOOST;
+            s1cnt++;
+            if (s1cnt > 12) {
+                player1Speed = PLAYER_SPEED;
+                speedItem1 = false;
+                s1cnt = 0;
+            }
+        }
+        if (speedItem2 == true) {
+            player2Speed = PLAYER_SPEED + BOOST;
+            s2cnt++;
+            if (s2cnt > 12) {
+                player2Speed = PLAYER_SPEED;
+                speedItem2 = false;
+                s2cnt = 0;
+            }
+        }
+        if (bombItem1 == true) {
+            b1cnt++;
+            if (b1cnt > 12) {
+                bombItem1 = false;
+                b1cnt = 0;
+            }
+        }
+        if (bombItem2 == true) {
+            b2cnt++;
+            if (b2cnt > 12) {
+                bombItem2 = false;
+                b2cnt = 0;
+            }
+        }
+        if (flameItem1 == true) {
+            f1cnt++;
+            if (f1cnt > 12) {
+                flameItem1 = false;
+                f1cnt = 0;
+            }
+        }
+        if (flameItem2 == true) {
+
+            f2cnt++;
+            if (f2cnt > 12) {
+                flameItem2 = false;
+                f2cnt = 0;
+            }
+        }
+
+
+        if (bombCnt1 >0 ) {
+            if (bombItem1 == true) { bombCnt1 -= 6; }
+            else { bombCnt1 -= 1; }
+        }
+        if (bombCnt2 > 0) {
+            if (bombItem2 == true) { bombCnt2 -= 6; }
+            else { bombCnt2 -= 1; }
+        }
+
+
+
+
 
         for (int c = 0; c < COLUMN; c++) {
             for (int r = 0; r < ROW; r++) {
@@ -650,7 +797,7 @@ void Bomberman::second()
                         FlameRemove(c, r);
                        
                     }
-
+                 
                 }
             }
         }
@@ -658,57 +805,346 @@ void Bomberman::second()
 }
 
 void Bomberman::Flame(int x, int y) {
+
+    emit playSound("explosion");
+
+    if (x - 1 >= 0) { xM1 = true; }
+    else { xM1 = false; }
+    if (x - 2 >= 0) { xM2 = true; }
+    else { xM2 = false; }
+    if (x + 1 < ROW) { xP1 = true; }
+    else { xP1 = false; }
+    if (x + 2 < ROW) { xP2 = true; }
+    else { xP2 = false; }
+
+    if (y - 1 >= 0) { yM1 = true; }
+    else { yM1 = false; }
+    if (y - 2 >= 0) { yM2 = true; }
+    else { yM2 = false; }
+    if (y + 1 < COLUMN) { yP1 = true; }
+    else { yP1 = false; }
+    if (y + 2 < COLUMN) { yP2 = true; }
+    else { yP2 = false; }
+
+    srand(time(NULL));
+
     if (map->Field[x][y]->st != 9) {
         map->Field[x][y]->st = 9;
         map->Field[x][y]->setPixmap(Map().FlamePix1);
-    }
 
-    if (map->Field[x+1][y]->st != 1 && map->Field[x + 1][y]->st != 9) {
-        map->Field[x+1][y]->st = 9;
-        map->Field[x+1][y]->setPixmap(Map().FlamePix1);
     }
-    if (map->Field[x - 1][y]->st != 1 && map->Field[x - 1][y]->st != 9) {
-        map->Field[x - 1][y]->st = 9;
-        map->Field[x - 1][y]->setPixmap(Map().FlamePix1);
+    if (xP1 == true) {
+        if (map->Field[x + 1][y]->st != 1 && map->Field[x + 1][y]->st != 9 ) {
+           
+            if (map->Field[x + 1][y]->st == 2) {
+                if (rand() % 10 == 0) {
+                    map->Field[x + 1][y]->st = 3;
+                    map->Field[x + 1][y]->setPixmap(Map().Item1Pix1);
+
+                }
+                else if (rand() % 10 == 1) {
+                    map->Field[x + 1][y]->st = 4;
+                    map->Field[x + 1][y]->setPixmap(Map().Item2Pix1);
+
+                }
+                else if (rand() % 10 == 2) {
+                    map->Field[x + 1][y]->st = 5;
+                    map->Field[x + 1][y]->setPixmap(Map().Item3Pix1);
+                }
+                else {
+                    map->Field[x + 1][y]->st = 9;
+                    map->Field[x + 1][y]->setPixmap(Map().FlamePix1);
+                }
+            }else{
+                map->Field[x + 1][y]->st = 9;
+                map->Field[x + 1][y]->setPixmap(Map().FlamePix1);
+            }
+        }
     }
-    if (map->Field[x ][y + 1]->st != 1 && map->Field[x ][y+ 1]->st != 9) {
-        map->Field[x ][y + 1]->st = 9;
-        map->Field[x ][y + 1]->setPixmap(Map().FlamePix1);
+    if (xM1 == true) {
+        if (map->Field[x - 1][y]->st != 1 && map->Field[x - 1][y]->st != 9) {
+            if (map->Field[x - 1][y]->st == 2) {
+                if (rand() % 10 == 0) {
+                    map->Field[x - 1][y]->st = 3;
+                    map->Field[x - 1][y]->setPixmap(Map().Item1Pix1);
+
+                }
+                else if (rand() % 10 == 1) {
+                    map->Field[x - 1][y]->st = 4;
+                    map->Field[x - 1][y]->setPixmap(Map().Item2Pix1);
+
+                }
+                else if (rand() % 10 == 2) {
+                    map->Field[x - 1][y]->st = 5;
+                    map->Field[x - 1][y]->setPixmap(Map().Item3Pix1);
+                }
+                else {
+                    map->Field[x - 1][y]->st = 9;
+                    map->Field[x - 1][y]->setPixmap(Map().FlamePix1);
+                }
+            }
+            else {
+                map->Field[x - 1][y]->st = 9;
+                map->Field[x - 1][y]->setPixmap(Map().FlamePix1);
+            }
+        }
     }
-    if (map->Field[x][y - 1]->st != 1 && map->Field[x ][y- 1]->st != 9) {
-        map->Field[x][y - 1]->st = 9;
-        map->Field[x][y - 1]->setPixmap(Map().FlamePix1);
+    if (yP1 == true) {
+        if (map->Field[x][y + 1]->st != 1 && map->Field[x][y + 1]->st != 9 ) {
+            if (map->Field[x][y +1]->st == 2) {
+                if (rand() % 10 == 0) {
+                    map->Field[x][y + 1]->st = 3;
+                    map->Field[x][y + 1]->setPixmap(Map().Item1Pix1);
+
+                }
+                else if (rand() % 10 == 1) {
+                    map->Field[x][y + 1]->st = 4;
+                    map->Field[x][y + 1]->setPixmap(Map().Item2Pix1);
+
+                }
+                else if (rand() % 10 == 2) {
+                    map->Field[x][y + 1]->st = 5;
+                    map->Field[x][y + 1]->setPixmap(Map().Item3Pix1);
+                }
+                else {
+                    map->Field[x][y + 1]->st = 9;
+                    map->Field[x][y + 1]->setPixmap(Map().FlamePix1);
+                }
+            }
+            else {
+                map->Field[x][y + 1]->st = 9;
+                map->Field[x][y + 1]->setPixmap(Map().FlamePix1);
+            }
+        }
     }
+    if (yM1 == true) {
+        if (map->Field[x][y - 1]->st != 1 && map->Field[x][y - 1]->st != 9 ) {
+            if (map->Field[x][y - 1]->st == 2) {
+                if (rand() % 10 == 0) {
+                    map->Field[x][y - 1]->st = 3;
+                    map->Field[x][y - 1]->setPixmap(Map().Item1Pix1);
+
+                }
+                else if (rand() % 10 == 1) {
+                    map->Field[x][y - 1]->st = 4;
+                    map->Field[x][y - 1]->setPixmap(Map().Item2Pix1);
+
+                }
+                else if (rand() % 10 == 2) {
+                    map->Field[x][y - 1]->st = 5;
+                    map->Field[x][y - 1]->setPixmap(Map().Item3Pix1);
+                }
+                else {
+                    map->Field[x][y - 1]->st = 9;
+                    map->Field[x][y - 1]->setPixmap(Map().FlamePix1);
+                }
+            }
+            else {
+                map->Field[x][y - 1]->st = 9;
+                map->Field[x][y - 1]->setPixmap(Map().FlamePix1);
+            }
+        }
+    }
+    if (map->Field[x][y]->flame ==true) {
+        if (xP2 == true) {
+            if (map->Field[x + 2][y]->st != 1 && map->Field[x + 2][y]->st < 9 && map->Field[x + 1][y]->st != 1) {
+                if (map->Field[x + 2][y]->st == 2) {
+                    if (rand() % 10 == 0) {
+                        map->Field[x + 2][y]->st = 3;
+                        map->Field[x + 2][y]->setPixmap(Map().Item1Pix1);
+
+                    }
+                    else if (rand() % 10 == 1) {
+                        map->Field[x + 2][y]->st = 4;
+                        map->Field[x + 2][y]->setPixmap(Map().Item2Pix1);
+
+                    }
+                    else if (rand() % 10 == 2) {
+                        map->Field[x + 2][y]->st = 5;
+                        map->Field[x + 2][y]->setPixmap(Map().Item3Pix1);
+                    }
+                    else {
+                        map->Field[x + 2][y]->st = 9;
+                        map->Field[x + 2][y]->setPixmap(Map().FlamePix1);
+                    }
+                }
+                else {
+                    map->Field[x + 2][y]->st = 9;
+                    map->Field[x + 2][y]->setPixmap(Map().FlamePix1);
+                }
+            }
+        }
+        if (xM2 == true) {
+            if (map->Field[x - 2][y]->st != 1 && map->Field[x - 2][y]->st < 9 && map->Field[x - 1][y]->st != 1 ) {
+                if (map->Field[x -2][y]->st == 2) {
+                    if (rand() % 10 == 0) {
+                        map->Field[x -2][y]->st = 3;
+                        map->Field[x -2][y]->setPixmap(Map().Item1Pix1);
+
+                    }
+                    else if (rand() % 10 == 1) {
+                        map->Field[x -2][y]->st = 4;
+                        map->Field[x -2][y]->setPixmap(Map().Item2Pix1);
+
+                    }
+                    else if (rand() % 10 == 2) {
+                        map->Field[x -2][y]->st = 5;
+                        map->Field[x -2][y]->setPixmap(Map().Item3Pix1);
+                    }
+                    else {
+                        map->Field[x -2][y]->st = 9;
+                        map->Field[x -2][y]->setPixmap(Map().FlamePix1);
+                    }
+                }
+                else {
+                    map->Field[x -2][y]->st = 9;
+                    map->Field[x -2][y]->setPixmap(Map().FlamePix1);
+                }
+            }
+        }
+        if (yP2 == true) {
+            if (map->Field[x][y + 2]->st != 1 && map->Field[x][y + 2]->st < 9 && map->Field[x][y + 1]->st != 1 ) {
+                if (map->Field[x][y + 2]->st == 2) {
+                    if (rand() % 10 == 0) {
+                        map->Field[x][y + 2]->st = 3;
+                        map->Field[x][y + 2]->setPixmap(Map().Item1Pix1);
+
+                    }
+                    else if (rand() % 10 == 1) {
+                        map->Field[x][y + 2]->st = 4;
+                        map->Field[x][y + 2]->setPixmap(Map().Item2Pix1);
+
+                    }
+                    else if (rand() % 10 == 2) {
+                        map->Field[x][y + 2]->st = 5;
+                        map->Field[x][y + 2]->setPixmap(Map().Item3Pix1);
+                    }
+                    else {
+                        map->Field[x][y + 2]->st = 9;
+                        map->Field[x][y + 2]->setPixmap(Map().FlamePix1);
+                    }
+                }
+                else {
+                    map->Field[x][y + 2]->st = 9;
+                    map->Field[x][y + 2]->setPixmap(Map().FlamePix1);
+                }
+            }
+        }
+        if (yM2 == true) {
+            if (map->Field[x][y - 2]->st != 1 && map->Field[x][y - 2]->st < 9 && map->Field[x][y - 1]->st != 1 ) {
+                if (map->Field[x][y - 2]->st == 2) {
+                    if (rand() % 10 == 0) {
+                        map->Field[x][y - 2]->st = 3;
+                        map->Field[x][y - 2]->setPixmap(Map().Item1Pix1);
+
+                    }
+                    else if (rand() % 10 == 1) {
+                        map->Field[x][y - 2]->st = 4;
+                        map->Field[x][y - 2]->setPixmap(Map().Item2Pix1);
+
+                    }
+                    else if (rand() % 10 == 2) {
+                        map->Field[x][y - 2]->st = 5;
+                        map->Field[x][y - 2]->setPixmap(Map().Item3Pix1);
+                    }
+                    else {
+                        map->Field[x][y - 2]->st = 9;
+                        map->Field[x][y - 2]->setPixmap(Map().FlamePix1);
+                    }
+                }
+                else {
+                    map->Field[x][y - 2]->st = 9;
+                    map->Field[x][y - 2]->setPixmap(Map().FlamePix1);
+                }
+            }
+        }
+    }  
 }
 
 void Bomberman::FlameRemove(int x, int y) {
-    map->Field[x][y]->time = 0;
+
+    if (x - 1 >= 0) { xM1 = true; }
+    else { xM1 = false; }
+    if (x - 2 >= 0) { xM2 = true; }
+    else { xM2 = false; }
+    if (x + 1 < COLUMN) { xP1 = true; }
+    else { xP1 = false; }
+    if (x + 2 < COLUMN && map->Field[x+2][y]) { xP2 = true; }
+    else { xP2 = false; }
+
+    if (y - 1 >= 0) { yM1 = true; }
+    else { yM1 = false; }
+    if (y - 2 >= 0) { yM2 = true; }
+    else { yM2 = false; }
+    if (y + 1 < ROW) { yP1 = true; }
+    else { yP1 = false; }
+    if (y + 2 < ROW){ yP2 = true; }
+    else { yP2 = false; }
+
     map->Field[x][y]->st = 0;
     map->Field[x][y]->setPixmap(Map().BlockNullPix);
 
-    if (map->Field[x + 1][y]->st == 9 ) {
-        map->Field[x + 1][y]->st = 0;
-        map->Field[x + 1][y]->setPixmap(Map().BlockNullPix);
+    if (xP1== true) {
+        if (map->Field[x + 1][y]->st == 9) {
+            map->Field[x + 1][y]->st = 0;
+            map->Field[x + 1][y]->setPixmap(Map().BlockNullPix);
+        }
     }
-    if (map->Field[x - 1][y]->st == 9) {
-        map->Field[x - 1][y]->st = 0;
-        map->Field[x - 1][y]->setPixmap(Map().BlockNullPix);
+    if (xM1 == true) {
+        if (map->Field[x - 1][y]->st == 9) {
+            map->Field[x - 1][y]->st = 0;
+            map->Field[x - 1][y]->setPixmap(Map().BlockNullPix);
+        }
     }
-    if (map->Field[x][y + 1]->st == 9 ) {
-        map->Field[x][y + 1]->st = 0;
-        map->Field[x][y + 1]->setPixmap(Map().BlockNullPix);
+        if (yP1 == true) {
+            if (map->Field[x][y + 1]->st == 9) {
+                map->Field[x][y + 1]->st = 0;
+                map->Field[x][y + 1]->setPixmap(Map().BlockNullPix);
+            }
+        }
+    if (yM1 == true) {
+        if (map->Field[x][y - 1]->st == 9) {
+            map->Field[x][y - 1]->st = 0;
+            map->Field[x][y - 1]->setPixmap(Map().BlockNullPix);
+        }
     }
-    if (map->Field[x][y - 1]->st == 9 ) {
-        map->Field[x][y - 1]->st = 0;
-        map->Field[x][y - 1]->setPixmap(Map().BlockNullPix);
+    if (map->Field[x][y]->flame == true) {
+        if (xP2 == true) {
+            if (map->Field[x + 2][y]->st == 9) {
+                map->Field[x + 2][y]->st = 0;
+                map->Field[x + 2][y]->setPixmap(Map().BlockNullPix);
+            }
+        }
+        if (xM2 == true) {
+            if (map->Field[x - 2][y]->st == 9) {
+                map->Field[x - 2][y]->st = 0;
+                map->Field[x - 2][y]->setPixmap(Map().BlockNullPix);
+            }
+        }
+        if (yP2 == true) {
+            if (map->Field[x][y + 2]->st == 9) {
+                map->Field[x][y + 2]->st = 0;
+                map->Field[x][y + 2]->setPixmap(Map().BlockNullPix);
+            }
+        }
+        if (yM2 == true) {
+            if (map->Field[x][y - 2]->st == 9) {
+                map->Field[x][y - 2]->st = 0;
+                map->Field[x][y - 2]->setPixmap(Map().BlockNullPix);
+            }
+        }
+        map->Field[x][y]->flame = 0;
+
     }
+    map->Field[x][y]->time = 0;
+
 }
 
 void Bomberman::refresh()
 {
 
     if (Status == InGame) {
-
+        
         int deadspot = 30;
         int xPlayer1 = map->player1->x();
         int yPlayer1 = map->player1->y();
@@ -765,6 +1201,126 @@ void Bomberman::refresh()
         else 
         { rCorPlayer1 = false; }
 
+        
+        //----------Item detection Player1----------------------------//
+
+        QList<QGraphicsItem*> collidingP1 = levelScene->collidingItems(map->player1);
+
+        cBombMerker1 = false;
+
+        for (int i = 0, n = collidingP1.size(); i < n; ++i) {
+            if (typeid(*(collidingP1[i])) == typeid(clBlock))
+            {
+                if (!collidingP1.isEmpty()) {
+                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 9) {
+                        if (scene() == levelScene) {
+                            if (pauseMenu->scene() != levelScene) {
+                                if (victoryMenu->scene() != levelScene) {
+                                    playerWon = 2;
+                                    openVictory();
+                                }
+                            }
+                        }
+                    }
+                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 8) {
+                        cBombMerker1 = true;
+                    }
+
+                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
+                        flameItem1 = true;
+                        map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st = 0;
+                        map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->setPixmap(Map().BlockNullPix);
+                    }
+                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 4) { //Item2
+                        bombItem1 = true;
+                        map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st = 0;
+                        map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->setPixmap(Map().BlockNullPix);
+                    }
+                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 5) { //Item3
+                        speedItem1 = true;
+                        map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st = 0;
+                        map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->setPixmap(Map().BlockNullPix);
+                    }
+                }
+            }
+            if (typeid(*(collidingP1[i])) == typeid(QGraphicsPixmapItem)) {
+
+                if (map->player1->x() > map->player2->x()) {
+                    leftStop1 = true;
+                    rightStop2 = true;
+                }
+                if (map->player1->x() < map->player2->x()) {
+                    leftStop2 = true;
+                    rightStop1 = true;
+                }
+                if (map->player1->y() > map->player2->y()) {
+                    upStop1 = true;
+                    downStop2 = true;
+                }
+                if (map->player1->y() < map->player2->y()) {
+                    upStop2 = true;
+                    downStop1 = true;
+
+                }
+            }
+        }
+
+        // Movment Obstacles avoidens Player1
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE) / BLOCK_SIZE)]->st == 1) { downStop1 = true; }
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer1 - PLAYER_SPEED) / BLOCK_SIZE)]->st == 1) { upStop1 = true; }
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 1) { rightStop1 = true; }
+        if (map->Field[int((xPlayer1 - PLAYER_SPEED) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 1) { leftStop1 = true; }
+
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE) / BLOCK_SIZE)]->st == 2) { downStop1 = true; }
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer1 - PLAYER_SPEED) / BLOCK_SIZE)]->st == 2) { upStop1 = true; }
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 2) { rightStop1 = true; }
+        if (map->Field[int((xPlayer1 - PLAYER_SPEED) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 2) { leftStop1 = true; }
+
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE) / BLOCK_SIZE)]->st == 8 && !bombMerker1) { downStop1 = true; }
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer1 - PLAYER_SPEED) / BLOCK_SIZE)]->st == 8 && !bombMerker1) { upStop1 = true; }
+        if (map->Field[int((xPlayer1 + BLOCK_SIZE) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 8 && !bombMerker1) { rightStop1 = true; }
+        if (map->Field[int((xPlayer1 - PLAYER_SPEED) / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 8 && !bombMerker1) { leftStop1 = true; }
+
+        if (cBombMerker1 == false) {
+            bombMerker1 = false;
+        }
+
+
+        //Movement Player 1
+
+        if ((!upStop1
+            && upKey1 == true
+            && (xPlayer1 % BLOCK_SIZE) == 0 || uCorPlayer1)
+            && map->player1->y() >= PLAYER_SPEED)
+        {
+            map->player1->moveBy(0, -PLAYER_SPEED);
+            StatusPlayer1 = 1;
+        }
+
+        if ((!downStop1 && downKey1 == true && (xPlayer1 % BLOCK_SIZE == 0) || dCorPlayer1) && (map->player1->y() <= MAP_HEIGHT - BLOCK_SIZE - PLAYER_SPEED)) {
+            map->player1->moveBy(0, PLAYER_SPEED);
+            StatusPlayer1 = 3;
+        }
+        if ((!leftStop1 && leftKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || lCorPlayer1) && map->player1->x() >= PLAYER_SPEED) {
+            map->player1->moveBy(-PLAYER_SPEED, 0);
+            StatusPlayer1 = 4;
+
+        }
+        if ((!rightStop1 && rightKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || rCorPlayer1) && (map->player1->x() <= MAP_WIDTH - BLOCK_SIZE - PLAYER_SPEED)) {
+            map->player1->moveBy(PLAYER_SPEED, 0);
+            StatusPlayer1 = 2;
+
+        }
+        if (!upKey1 && !downKey1 && !rightKey1 && !leftKey1) {
+            StatusPlayer1 = 0;
+        }
+
+
+
+
+
+
+
         //Autocorrection Player 2
         if (!(lCorPlayer2 || rCorPlayer2) 
                 &&((yPlayer2 % BLOCK_SIZE) <= deadspot 
@@ -799,130 +1355,69 @@ void Bomberman::refresh()
         { rCorPlayer2 = false; }
 
 
+        //----------Item detection Player2----------------------------//
 
-        // Movment Obstacles avoidens Player1
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE)      / BLOCK_SIZE)]->st == 1) { downStop1 = true;}
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer1 - PLAYER_SPEED)    / BLOCK_SIZE)]->st == 1) { upStop1 = true;}
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE)      / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 1) { rightStop1 = true;}
-        if (map->Field[int((xPlayer1 - PLAYER_SPEED)    / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 1) { leftStop1 = true;}
-            
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE)      / BLOCK_SIZE)]->st == 2) { downStop1 = true;}
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer1 - PLAYER_SPEED)    / BLOCK_SIZE)]->st == 2) { upStop1 = true;}
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE)      / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 2) { rightStop1 = true;}
-        if (map->Field[int((xPlayer1 - PLAYER_SPEED)    / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 2) { leftStop1 = true;}
+        QList<QGraphicsItem*> collidingP2 = levelScene->collidingItems(map->player2);
 
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE)      / BLOCK_SIZE)]->st == 8) { downStop1 = true; }
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer1 - PLAYER_SPEED)    / BLOCK_SIZE)]->st == 8) { upStop1 = true; }
-        if (map->Field[int((xPlayer1 + BLOCK_SIZE)      / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 8) { rightStop1 = true; }
-        if (map->Field[int((xPlayer1 - PLAYER_SPEED)    / BLOCK_SIZE)][int((yPlayer1 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 8) { leftStop1 = true; }
+        cBombMerker2 = false;
+
+        for (int i = 0, n = collidingP2.size(); i < n; ++i) {
+            if (typeid(*(collidingP2[i])) == typeid(clBlock))
+            {
+                if (!collidingP2.isEmpty()) {
+                    if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 9) { //Flamme
+                        if (scene() == levelScene) {
+                            if (pauseMenu->scene() != levelScene) {
+                                if (victoryMenu->scene() != levelScene) {
+                                    playerWon = 1;
+                                    openVictory();
+                                }
+                            }
+                        }
+                    }
+                    if ((map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 8)) {
+                        cBombMerker2 = true;
+                    }
+
+                    if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
+                        flameItem2 = true;
+                        map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st = 0;
+                        map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->setPixmap(Map().BlockNullPix);
+                    }
+                    if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 4) { //Item2
+                        bombItem2 = true;     
+                        map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st = 0;
+                        map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->setPixmap(Map().BlockNullPix);
+                    }
+                    if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 5) { //Item3
+                        speedItem2 = true;
+                        map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st = 0;
+                        map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->setPixmap(Map().BlockNullPix);
+                    }
+                }
+            }
+        }
+
 
         // Movment Obstacles avoidens Player 2
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE)      / BLOCK_SIZE)]->st == 1) { downStop2 = true; }
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer2 - PLAYER_SPEED)    / BLOCK_SIZE)]->st == 1) { upStop2 = true; }
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE)      / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 1) { rightStop2 = true; }
-        if (map->Field[int((xPlayer2 - PLAYER_SPEED)    / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 1) { leftStop2 = true; }
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE) / BLOCK_SIZE)]->st == 1) { downStop2 = true; }
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer2 - PLAYER_SPEED) / BLOCK_SIZE)]->st == 1) { upStop2 = true; }
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 1) { rightStop2 = true; }
+        if (map->Field[int((xPlayer2 - PLAYER_SPEED) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 1) { leftStop2 = true; }
 
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE)      / BLOCK_SIZE)]->st == 2) { downStop2 = true; }
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer2 - PLAYER_SPEED)    / BLOCK_SIZE)]->st == 2) { upStop2 = true; }
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE)      / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 2) { rightStop2 = true; }
-        if (map->Field[int((xPlayer2 - PLAYER_SPEED)    / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 2) { leftStop2 = true; }
-
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE)      / BLOCK_SIZE)]->st == 8) { downStop2 = true; }
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)][int((yPlayer2 - PLAYER_SPEED)    / BLOCK_SIZE)]->st == 8) { upStop2 = true; }
-        if (map->Field[int((xPlayer2 + BLOCK_SIZE)      / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 8) { rightStop2 = true; }
-        if (map->Field[int((xPlayer2 - PLAYER_SPEED)    / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2)  / BLOCK_SIZE)]->st == 8) { leftStop2 = true; }
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE) / BLOCK_SIZE)]->st == 2) { downStop2 = true; }
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer2 - PLAYER_SPEED) / BLOCK_SIZE)]->st == 2) { upStop2 = true; }
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 2) { rightStop2 = true; }
+        if (map->Field[int((xPlayer2 - PLAYER_SPEED) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 2) { leftStop2 = true; }
 
 
-        //old Collision detection
-        {//qDebug() << collidingP1[i]->x() << xPlayer1<< leftStop1;
-        //qDebug() << leftStop1;
-        //--------------Movment with Collision---------------------//
-            //QList<QGraphicsItem*> collidingP1 = levelScene->collidingItems(map->player1);
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE) / BLOCK_SIZE)]->st == 8 && !bombMerker2) { downStop2 = true; }
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)][int((yPlayer2 - PLAYER_SPEED) / BLOCK_SIZE)]->st == 8 && !bombMerker2) { upStop2 = true; }
+        if (map->Field[int((xPlayer2 + BLOCK_SIZE) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 8 && !bombMerker2) { rightStop2 = true; }
+        if (map->Field[int((xPlayer2 - PLAYER_SPEED) / BLOCK_SIZE)][int((yPlayer2 + BLOCK_SIZE / 2) / BLOCK_SIZE)]->st == 8 && !bombMerker2) { leftStop2 = true; }
 
-            //for (int i = 0, n = collidingP1.size(); i < n; ++i) {
-            //    if (typeid(*(collidingP1[i])) == typeid(Stein) ||
-            //        typeid(*(collidingP1[i])) == typeid(Kiste))
-            //    {
-            //        if (!collidingP1.isEmpty()) {
-            //            if (yPlayer1 + BLOCK_SIZE / 2 > collidingP1[i]->y()) { upStop1 = true; }
-            //            if (yPlayer1 + BLOCK_SIZE / 2 < collidingP1[i]->y()) { downStop1 = true; }
-            //            if (xPlayer1 + BLOCK_SIZE / 2 > collidingP1[i]->x()) { leftStop1 = true; }
-            //            if (xPlayer1 + BLOCK_SIZE / 2 < collidingP1[i]->x()) { rightStop1 = true; }
-            //        }
-            //    }
-            //    //---------------------------------------------------------//
-
-            //    if (typeid(*(collidingP1[i])) == typeid(Bombe)) {
-            //        if (!collidingP1.isEmpty()) {
-            //            int y = int(collidingP1[i]->y() / BLOCK_SIZE);
-            //            int x = int(collidingP1[i]->x() / BLOCK_SIZE);
-            //            int z = map->BoField[x][y]->st;
-            //            qDebug() << z;
-
-            //            //levelScene->removeItem(collidingP1[i]);
-            //        }
-            //    }
-
-            //    if (typeid(*(collidingP1[i])) == typeid(Flame)) {
-            //        if (!collidingP1.isEmpty()) {
-            //            // Tot oder Leben Abziehen
-            //            // Flammen aufrufen
-            //        }
-            //    }
-
-            //    if (typeid(*(collidingP1[i])) == typeid(Item)) {
-            //        if (!collidingP1.isEmpty()) {
-            //            int z = map->ItField[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st;
-            //            qDebug() << z;
-            //            // Tot oder Leben Abziehen
-            //            // Flammen aufrufen
-            //        }
-            //    }
-
-            //}
-
-
-            //Collision
-            //QList<QGraphicsItem*> colliding_items = levelScene->collidingItems(map->player1);
-            //for (int i = 0, n = colliding_items.size(); i < n; ++i) {
-            //    if (typeid(*(colliding_items[i])) == typeid(clBlock)) {
-            //        if (!colliding_items.isEmpty()) {
-            //            qDebug() << colliding_items[i]->x()/BLOCK_SIZE <<colliding_items[i]->y() / BLOCK_SIZE << "Stein";
-
-
-
-
-        }
-
-
-
-
-        //Movement Player 1
-        if ((!upStop1 
-                && upKey1 == true 
-                    && (xPlayer1 % BLOCK_SIZE) == 0 || uCorPlayer1) 
-                        && map->player1->y() >= PLAYER_SPEED) 
-        {
-            map->player1->moveBy(0, -PLAYER_SPEED);
-            StatusPlayer1 = 1;
-        }
-
-        if ((!downStop1&& downKey1 == true && (xPlayer1 % BLOCK_SIZE == 0) || dCorPlayer1) && (map->player1->y() <= MAP_HEIGHT - BLOCK_SIZE- PLAYER_SPEED)) {
-            map->player1->moveBy(0, PLAYER_SPEED);
-            StatusPlayer1 = 3;
-        }
-        if ((!leftStop1 && leftKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || lCorPlayer1) && map->player1->x() >= PLAYER_SPEED) {
-            map->player1->moveBy(-PLAYER_SPEED, 0);
-            StatusPlayer1 = 4;
-
-        }
-        if ((!rightStop1 && rightKey1 == true && (yPlayer1 % BLOCK_SIZE) == 0 || rCorPlayer1) && (map->player1->x() <= MAP_WIDTH - BLOCK_SIZE- PLAYER_SPEED)) {
-            map->player1->moveBy(PLAYER_SPEED, 0);
-            StatusPlayer1 = 2;
-
-        }
-        if (!upKey1 && !downKey1 && !rightKey1 && !leftKey1) {
-            StatusPlayer1 = 0;
+        if(cBombMerker2== false) {
+            bombMerker2 = false;
         }
 
         //Movement Player 2
@@ -945,73 +1440,7 @@ void Bomberman::refresh()
         if (!upKey2 && !downKey2 && !rightKey2 && !leftKey2) {
             StatusPlayer2 = 0; }
 
-
-        //----------Item detection Player1----------------------------//
-
-        QList<QGraphicsItem*> collidingP1 = levelScene->collidingItems(map->player1);
-
-        for (int i = 0, n = collidingP1.size(); i < n; ++i) {
-            if (typeid(*(collidingP1[i])) == typeid(clBlock))
-            {
-                if (!collidingP1.isEmpty()) {
-                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 9){ //Flamme
-                        if (scene() == levelScene) {
-                            if (pauseMenu->scene() != levelScene) {
-                                if (victoryMenu->scene() != levelScene) {
-                                    playerWon = 2;
-                                    openVictory();
-                                }
-                            }
-                        }
-                    }
-                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
-                        
-                        levelScene->removeItem(collidingP1[i]);
-                    }
-                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 4) { //Item2
-
-                        levelScene->removeItem(collidingP1[i]);
-                    }
-                    if (map->Field[int(collidingP1[i]->x() / BLOCK_SIZE)][int(collidingP1[i]->y() / BLOCK_SIZE)]->st == 5) { //Item3
-                        
-                        levelScene->removeItem(collidingP1[i]);
-                    }
-                }
-            }
-        }
-        //----------Item detection Player2----------------------------//
-
-        QList<QGraphicsItem*> collidingP2 = levelScene->collidingItems(map->player2);
-
-        for (int i = 0, n = collidingP2.size(); i < n; ++i) {
-            if (typeid(*(collidingP2[i])) == typeid(clBlock))
-            {
-                if (!collidingP2.isEmpty()) {
-                    if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 9) { //Flamme
-                        if (scene() == levelScene) {
-                            if (pauseMenu->scene() != levelScene) {
-                                if (victoryMenu->scene() != levelScene) {
-                                    playerWon = 1;
-                                    openVictory();
-                                }
-                            }
-                        }
-                    }
-                    if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 3) { //Item1
-
-                        levelScene->removeItem(collidingP2[i]);
-                    }
-                    if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 4) { //Item2
-
-                        levelScene->removeItem(collidingP2[i]);
-                    }
-                    if (map->Field[int(collidingP2[i]->x() / BLOCK_SIZE)][int(collidingP2[i]->y() / BLOCK_SIZE)]->st == 5) { //Item3
-
-                        levelScene->removeItem(collidingP2[i]);
-                    }
-                }
-            }
-        }
+        
 
 
      }
