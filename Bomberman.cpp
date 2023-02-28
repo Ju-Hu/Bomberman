@@ -9,7 +9,7 @@ Bomberman::Bomberman()
     // init szene
     levelScene = new QGraphicsScene();
     QImage backgroundMap = QImage("images/backgrounds/background_map.png");
-    //background = background.scaled(WINDOW_HEIGHT, WINDOW_WIDTH);
+    //backgroundMap = backgroundMap.scaled(WINDOW_HEIGHT/2, WINDOW_WIDTH/2);
     levelScene->setBackgroundBrush(backgroundMap);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -250,6 +250,8 @@ void Bomberman::openMenu()
         closePause();
     if (victoryMenu->scene() == levelScene)
         closeVictory();
+    if (scene() == editorScene)
+        emit playSound("click");
 
     paused = true;
     Status = InMenu;
@@ -264,14 +266,12 @@ void Bomberman::openMenu()
     setScene(menuScene);
 
     //menu music
-    emit playSound("stopMusic");
     emit playSound("menu");
 }
 
 void Bomberman::clicked1()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map1");
     levelScene->clear();
     map->generateMap1();
@@ -310,7 +310,6 @@ void Bomberman::clicked1()
 void Bomberman::clicked2()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map2");
     levelScene->clear();
     map->generateMap2();
@@ -350,7 +349,6 @@ void Bomberman::clicked2()
 void Bomberman::clicked3()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map3");
     levelScene->clear();
     map->generateMap3();
@@ -475,9 +473,8 @@ void Bomberman::closeCredits()
 
 void Bomberman::openVictory()
 {
-
-    emit playSound("click");
-    emit playSound("startPauseMusic");
+    emit playSound("win");
+    emit playSound("stopMusic");
 
     // Show mouse cursor
     QApplication::setOverrideCursor(Qt::ArrowCursor);
@@ -485,8 +482,8 @@ void Bomberman::openVictory()
     // stop timer
     paused = true;
     Status = Paused;
-    if (playerWon == 1) { victoryMenu->title->setPlainText("Player 1\nWon!"); }
-    if (playerWon == 2) { victoryMenu->title->setPlainText("Player 2\nWon!"); }
+    if (playerWon == 1) { victoryMenu->title->setPlainText("   Blue\n  Wins!"); }
+    if (playerWon == 2) { victoryMenu->title->setPlainText("  Green\n  Wins!"); }
 
     levelScene->addItem(victoryMenu);
     levelScene->addWidget(victoryMenu->getBackMenuBtn2());
@@ -495,7 +492,6 @@ void Bomberman::openVictory()
 void Bomberman::closeVictory()
 {
     emit playSound("click");
-    emit playSound("stopPauseMusic");
 
     // hide mouse cursor
     QApplication::setOverrideCursor(Qt::BlankCursor);
@@ -511,6 +507,7 @@ void Bomberman::closeVictory()
 // Editor--------------------------------------------------------------------------------------
 void Bomberman::openEditor()
 {
+    emit playSound("click");
     // Show mouse cursor
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 
@@ -521,8 +518,7 @@ void Bomberman::openEditor()
 
 void Bomberman::clickedEdit(int btnIndex)
 {
-    //changeEdit(1, 0);
-    qDebug() << btnIndex;
+    emit playSound("click");
     for (int r = 0; r < ROW;) {
         for (int c = 0; c < COLUMN; c++) {
             if (editorScene->editField[c][r]->btnID == btnIndex)
@@ -539,8 +535,8 @@ void Bomberman::clickedEdit(int btnIndex)
                     if (editorScene->editField[c][r]->st == 3) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup1.png);"); }
                     if (editorScene->editField[c][r]->st == 4) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup2.png);"); }
                     if (editorScene->editField[c][r]->st == 5) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup3.png);"); }
-                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/player1/stop1.png);"); }
-                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/player2/stop1.png);"); }
+                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player1.png);"); }
+                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player2.png);"); }
                 }
                 if (editStatus == 8)
                 {
@@ -557,30 +553,37 @@ void Bomberman::clickedEdit(int btnIndex)
 }
 void Bomberman::loadEdit1()
 {
+    emit playSound("click");
     editorScene->loadEditor(1);
 }
 void Bomberman::loadEdit2()
 {
+    emit playSound("click");
     editorScene->loadEditor(2);
 }
 void Bomberman::loadEdit3()
 {
+    emit playSound("click");
     editorScene->loadEditor(3);
 }
 void Bomberman::loadEdit4()
 {
+    emit playSound("click");
     editorScene->loadEditor(4);
 }
 void Bomberman::saveEdit1()
 {
+    emit playSound("click");
     editorScene->saveEditor(1);
 }
 void Bomberman::saveEdit2()
 {
+    emit playSound("click");
     editorScene->saveEditor(2);
 }
 void Bomberman::saveEdit3()
 {
+    emit playSound("click");
     editorScene->saveEditor(3);
 }
 
@@ -802,6 +805,8 @@ void Bomberman::second()
 }
 
 void Bomberman::Flame(int x, int y) {
+
+    emit playSound("explosion");
 
     if (x - 1 >= 0) { xM1 = true; }
     else { xM1 = false; }

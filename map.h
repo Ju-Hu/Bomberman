@@ -103,8 +103,8 @@ public:
 	QPixmap BoxPix2 =	QPixmap("images/block4.png");
 
 	//Pixmaps for Map3
-	QPixmap StonePix3 = QPixmap("images/block3.png");
-	QPixmap BoxPix3 =	QPixmap("images/block4.png");
+	QPixmap StonePix3 = QPixmap("images/block5.png");
+	QPixmap BoxPix3 =	QPixmap("images/block6.png");
 
 
 private:
