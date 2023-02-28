@@ -250,14 +250,12 @@ void Bomberman::openMenu()
     setScene(menuScene);
 
     //menu music
-    emit playSound("stopMusic");
     emit playSound("menu");
 }
 
 void Bomberman::clicked1()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map1");
     levelScene->clear();
     map->generateMap1();
@@ -276,7 +274,6 @@ void Bomberman::clicked1()
 void Bomberman::clicked2()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map2");
     levelScene->clear();
     map->generateMap2();
@@ -294,7 +291,6 @@ void Bomberman::clicked2()
 void Bomberman::clicked3()
 {
     emit playSound("click");
-    emit playSound("stopMusic");
     emit playSound("map3");
     levelScene->clear();
     map->generateMap3();
@@ -397,8 +393,8 @@ void Bomberman::closeCredits()
 
 void Bomberman::openVictory()
 {
-    emit playSound("click");
-    emit playSound("startPauseMusic");
+    emit playSound("win");
+    emit playSound("stopMusic");
 
     // Show mouse cursor
     QApplication::setOverrideCursor(Qt::ArrowCursor);
@@ -416,7 +412,6 @@ void Bomberman::openVictory()
 void Bomberman::closeVictory()
 {
     emit playSound("click");
-    emit playSound("stopPauseMusic");
 
     // hide mouse cursor
     QApplication::setOverrideCursor(Qt::BlankCursor);
@@ -666,6 +661,7 @@ void Bomberman::second()
 }
 
 void Bomberman::Flame(int x, int y) {
+    emit playSound("explosion");
     if (map->Field[x][y]->st != 9) {
         map->Field[x][y]->st = 9;
         map->Field[x][y]->setPixmap(Map().FlamePix1);

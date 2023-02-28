@@ -6,51 +6,24 @@ Sound::Sound(QWidget* parent) : QDialog(parent){
     click->setMedia(QUrl("sounds/click.wav"));
     click->setVolume(40);
 
-    /*this->run = new QSoundEffect;
-    run->setSource(QUrl("sounds/click.wav"));
-    run->setLoopCount(0);
-    run->setVolume(.25f);
+    this->win = new QMediaPlayer;
+    win->setMedia(QUrl("sounds/win.mp3"));
+    win->setVolume(20);
 
-    this->bomb = new QSoundEffect;
-    bomb->setSource(QUrl("sounds/click.wav"));
-    bomb->setLoopCount(0);
-    bomb->setVolume(.25f);
+    this->explosion = new QMediaPlayer;
+    explosion->setMedia(QUrl("sounds/explosion.mp3"));
+    explosion->setVolume(20);
 
-    this->explosion = new QSoundEffect;
-    explosion->setSource(QUrl("sounds/click.wav"));
-    explosion->setLoopCount(0);
-    explosion->setVolume(.25f);
+    this->playlist = new QMediaPlaylist;
+    playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    playlist->addMedia(QUrl("sounds/menu.mp3"));
+    playlist->addMedia(QUrl("sounds/map1.mp3"));
+    playlist->addMedia(QUrl("sounds/map2.mp3"));
+    playlist->addMedia(QUrl("sounds/map3.mp3"));
+    playlist->setCurrentIndex(0);
 
-    this->pickup = new QSoundEffect;
-    pickup->setSource(QUrl("sounds/click.wav"));
-    pickup->setLoopCount(0);
-    pickup->setVolume(.25f);
-
-    this->pause = new QSoundEffect;
-    pause->setSource(QUrl("sounds/click.wav"));
-    pause->setLoopCount(0);
-    pause->setVolume(.25f);
-
-    this->win = new QSoundEffect;
-    win->setSource(QUrl("sounds/click.wav"));
-    win->setLoopCount(0);
-    win->setVolume(.25f);*/
-
-    this->menu = new QMediaPlayer;
-    menu->setMedia(QUrl("sounds/menu.mp3"));
-    menu->setVolume(20);
-
-    this->map1 = new QMediaPlayer;
-    map1->setMedia(QUrl("sounds/map1.mp3"));
-    map1->setVolume(20);
-
-    this->map2 = new QMediaPlayer;
-    map2->setMedia(QUrl("sounds/map2.mp3"));
-    map2->setVolume(20);
-
-    this->map3 = new QMediaPlayer;
-    map3->setMedia(QUrl("sounds/map3.mp3"));
-    map3->setVolume(20);
+    this->music = new QMediaPlayer;
+    music->setPlaylist(playlist);
 }
 
 Sound::~Sound() {
@@ -58,12 +31,10 @@ Sound::~Sound() {
 
 void Sound::setVolume(int volume)
 {
-    //qDebug() << "setVolume " << volume;
-    menu->setVolume(MUSIC_VOLUME * volume);
-    map1->setVolume(MUSIC_VOLUME * volume);
-    map2->setVolume(MUSIC_VOLUME * volume);
-    map3->setVolume(MUSIC_VOLUME * volume);
+    music->setVolume(MUSIC_VOLUME * volume);
     click->setVolume(EFFECT_VOLUME * volume);
+    win->setVolume(EFFECT_VOLUME * volume * 3);
+    explosion->setVolume(EFFECT_VOLUME * volume);
     newVolume = MUSIC_VOLUME * volume;
 }
 
@@ -71,29 +42,14 @@ void Sound::playSound(QString which) {
 
 
     if (which == "click") {
-
+        if (click->PlayingState == 1)
+            click->stop();
         click->play();
-        QTimer::singleShot(250, click, SLOT(stop()));
-    }
-    else if (which == "run") {
-
-        run->play();
-    }
-    else if (which == "bomb") {
-
-        bomb->play();
     }
     else if (which == "explosion") {
-
+        if(explosion->PlayingState == 1)
+            explosion->stop();
         explosion->play();
-    }
-    else if (which == "pickup") {
-
-        pickup->play();
-    }
-    else if (which == "pause") {
-
-        pause->play();
     }
     else if (which == "win") {
 
@@ -101,40 +57,32 @@ void Sound::playSound(QString which) {
     }
     else if (which == "menu") {
 
-        menu->play();
+        playlist->setCurrentIndex(0);
+        music->play();
     }
     else if (which == "map1") {
 
-        map1->play();
+        playlist->setCurrentIndex(1);
     }
     else if (which == "map2") {
 
-        map2->play();
+        playlist->setCurrentIndex(2);
     }
     else if (which == "map3") {
 
-        map3->play();
+        playlist->setCurrentIndex(3);
     }
     else if (which == "stopMusic") {
 
-        menu->stop();
-        map1->stop();
-        map2->stop();
-        map3->stop();
+        music->stop();
     }
     else if (which == "startPauseMusic") {
-        
-        menu->setVolume(newVolume/4);
-        map1->setVolume(newVolume/4);
-        map2->setVolume(newVolume/4);
-        map3->setVolume(newVolume/4);
+
+        music->setVolume(newVolume/4);
     }
     else if (which == "stopPauseMusic") {
-        
-        menu->setVolume(newVolume);
-        map1->setVolume(newVolume);
-        map2->setVolume(newVolume);
-        map3->setVolume(newVolume);
+ 
+        music->setVolume(newVolume);
     }
 
     else {

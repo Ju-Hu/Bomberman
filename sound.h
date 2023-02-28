@@ -13,9 +13,9 @@ public:
 
 private:
 
-    QSoundEffect * run, * bomb, * explosion, * pickup, * pause, * win;
+    QMediaPlayer* click, *win, *explosion, *music;
 
-    QMediaPlayer* click, * menu, * map1, * map2, * map3;
+    QMediaPlaylist* playlist;
 
     int newVolume;
 
