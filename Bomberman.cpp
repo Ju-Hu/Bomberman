@@ -1216,6 +1216,7 @@ void Bomberman::refresh()
                         if (scene() == levelScene) {
                             if (pauseMenu->scene() != levelScene) {
                                 if (victoryMenu->scene() != levelScene) {
+                                    map->player1->setPixmap(Map().Player1Pix1dead);
                                     playerWon = 2;
                                     openVictory();
                                 }
@@ -1369,6 +1370,7 @@ void Bomberman::refresh()
                         if (scene() == levelScene) {
                             if (pauseMenu->scene() != levelScene) {
                                 if (victoryMenu->scene() != levelScene) {
+                                    map->player2->setPixmap(Map().Player2Pix1dead);
                                     playerWon = 1;
                                     openVictory();
                                 }
