@@ -90,9 +90,9 @@ void Map::generateMap1()
     /*--------------------Creating Map-------------------------------*/
         for (int c = 0; c < COLUMN; c++) {
             if (modified_input[c] != '\0') {
-                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0',0);
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0',0, false);
                 Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
-                Field[c][r]->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+                Field[c][r]->setShapeMode(QGraphicsPixmapItem::MaskShape);
                 
                 //Create Stone
                 if (Field[c][r]->st == 1) {
@@ -192,7 +192,7 @@ void Map::generateMap2()
         /*--------------------Creating Map-------------------------------*/
         for (int c = 0; c < COLUMN; c++) {
             if (modified_input[c] != '\0') {
-                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0', 0);
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0', 0, false);
                 Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
 
                 //Create Stone
@@ -294,7 +294,7 @@ void Map::generateMap3()
         /*--------------------Creating Map-------------------------------*/
         for (int c = 0; c < COLUMN; c++) {
             if (modified_input[c] != '\0') {
-                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0', 0);
+                Field[c][r] = new clBlock(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, modified_input[c] - '0', 0, false);
                 Field[c][r]->setPos(Field[c][r]->x, Field[c][r]->y);
 
                 //Create Stone
