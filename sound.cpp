@@ -56,7 +56,8 @@ void Sound::playSound(QString which) {
         win->play();
     }
     else if (which == "menu") {
-
+        if (win->PlayingState == 1)
+            win->stop();
         playlist->setCurrentIndex(0);
         music->play();
     }

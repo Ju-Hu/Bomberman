@@ -402,8 +402,8 @@ void Bomberman::openVictory()
     // stop timer
     paused = true;
     Status = Paused;
-    if (playerWon == 1) { victoryMenu->title->setPlainText("Player 1\n  Wins!"); }
-    if (playerWon == 2) { victoryMenu->title->setPlainText("Player 2\n  Wins!"); }
+    if (playerWon == 1) { victoryMenu->title->setPlainText("   Blue\n  Wins!"); }
+    if (playerWon == 2) { victoryMenu->title->setPlainText("  Green\n  Wins!"); }
 
     levelScene->addItem(victoryMenu);
     levelScene->addWidget(victoryMenu->getBackMenuBtn2());
@@ -455,8 +455,8 @@ void Bomberman::clickedEdit(int btnIndex)
                     if (editorScene->editField[c][r]->st == 3) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup1.png);"); }
                     if (editorScene->editField[c][r]->st == 4) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup2.png);"); }
                     if (editorScene->editField[c][r]->st == 5) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/powerup3.png);"); }
-                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/player1/stop1.png);"); }
-                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player/player2/stop1.png);"); }
+                    if (editorScene->editField[c][r]->st == 6) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player1.png);"); }
+                    if (editorScene->editField[c][r]->st == 7) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/player2.png);"); }
                 }
                 if (editStatus == 8)
                 {
