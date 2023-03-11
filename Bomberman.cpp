@@ -135,6 +135,7 @@ void Bomberman::keyPressEvent(QKeyEvent* event)
         downKey2 = true;
     }
     if (event->key() == Qt::Key_Space) {
+
         //Bomb placement Player2
         if (scene() == levelScene && bombKey2old == false ) {
             bombKey2old = true;
@@ -155,6 +156,7 @@ void Bomberman::keyPressEvent(QKeyEvent* event)
         }
     }
     if (event->key() == Qt::Key_Enter|| event->key() == Qt::Key_Return) {
+
         //Bomb placement Player1
         if (scene() == levelScene && bombKey1old == false) {
             bombKey1old = true;
@@ -237,8 +239,7 @@ void Bomberman::keyReleaseEvent(QKeyEvent* event)
 void Bomberman::resizeEvent(QResizeEvent* event)
 {
     qDebug() << "resize";
-    /*if (levelScene)
-        levelScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);*/
+
     // Scale the view to the new size
     QRect rect = QRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     fitInView(rect, Qt::KeepAspectRatio);
@@ -259,9 +260,9 @@ void Bomberman::openMenu()
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 
     // stop timers
-    /*Animtimer->stop();
-    refreshTimer->stop();*/
+
     menuScene->removeItem(creditsMenu);
+
     // replace scene by menu scene
     setScene(menuScene);
 
@@ -269,7 +270,7 @@ void Bomberman::openMenu()
     emit playSound("menu");
 }
 
-void Bomberman::clicked1()
+void Bomberman::clicked1()  // Generate Map1
 {
     emit playSound("click");
     emit playSound("map1");
@@ -307,7 +308,7 @@ void Bomberman::clicked1()
     openGame();
 }
 
-void Bomberman::clicked2()
+void Bomberman::clicked2()  // Generate Map2
 {
     emit playSound("click");
     emit playSound("map2");
@@ -346,7 +347,7 @@ void Bomberman::clicked2()
 
 }
 
-void Bomberman::clicked3()
+void Bomberman::clicked3()  // Generate Map3
 {
     emit playSound("click");
     emit playSound("map3");
@@ -528,7 +529,7 @@ void Bomberman::clickedEdit(int btnIndex)
                 if (editStatus <= 7)
                 {
                     editorScene->editField[c][r]->text = QString::number(editStatus);
-                    //editorScene->editField[c][r]->setText(editorScene->editField[c][r]->text);
+
                     editorScene->editField[c][r]->st = editStatus;
                     if (editorScene->editField[c][r]->st == 1) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/block3.png);"); }
                     if (editorScene->editField[c][r]->st == 2) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/block4.png);"); }
@@ -542,7 +543,7 @@ void Bomberman::clickedEdit(int btnIndex)
                 {
                     editStatus = 0;
                     editorScene->editField[c][r]->text = QString::number(editStatus);
-                    //editorScene->editField[c][r]->setText(editorScene->editField[c][r]->text);
+
                     editorScene->editField[c][r]->st = editStatus;
                     if (editorScene->editField[c][r]->st == 0) { editorScene->editField[c][r]->setStyleSheet("border-image:url(images/block0.png);"); }
                 }
@@ -712,7 +713,7 @@ void Bomberman::animate()
 
 void Bomberman::second() 
 {
-
+    //------Item set
 
     if (Status == InGame) {
        
@@ -807,7 +808,7 @@ void Bomberman::second()
 void Bomberman::Flame(int x, int y) {
 
     emit playSound("explosion");
-
+    //---- Flame detaction
     if (x - 1 >= 0) { xM1 = true; }
     else { xM1 = false; }
     if (x - 2 >= 0) { xM2 = true; }
@@ -828,6 +829,8 @@ void Bomberman::Flame(int x, int y) {
 
     srand(time(NULL));
 
+
+    //---- Flame placing
     if (map->Field[x][y]->st != 9) {
         map->Field[x][y]->st = 9;
         map->Field[x][y]->setPixmap(Map().FlamePix1);
@@ -945,6 +948,8 @@ void Bomberman::Flame(int x, int y) {
             }
         }
     }
+    //---- Flame placing Powerup
+
     if (map->Field[x][y]->flame ==true) {
         if (xP2 == true) {
             if (map->Field[x + 2][y]->st != 1 && map->Field[x + 2][y]->st < 9 && map->Field[x + 1][y]->st != 1) {
@@ -1081,6 +1086,8 @@ void Bomberman::FlameRemove(int x, int y) {
     if (y + 2 < ROW){ yP2 = true; }
     else { yP2 = false; }
 
+    //---- Flame removing
+
     map->Field[x][y]->st = 0;
     map->Field[x][y]->setPixmap(Map().BlockNullPix);
 
@@ -1108,6 +1115,8 @@ void Bomberman::FlameRemove(int x, int y) {
             map->Field[x][y - 1]->setPixmap(Map().BlockNullPix);
         }
     }
+    //---- Flame removing Powerup
+
     if (map->Field[x][y]->flame == true) {
         if (xP2 == true) {
             if (map->Field[x + 2][y]->st == 9) {
